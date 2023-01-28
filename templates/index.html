@@ -1,0 +1,9 @@
+<h3>Etusivu - Video game list -</h3>
+
+{% if session.user_id %} 
+Olet kirjautunut sisään tunnuksella <b>{{ session.user_name }}</b>. <a href="/logout">Kirjaudu ulos</a>
+{% else %}
+<a href="/login">Kirjaudu sisään</a> tai
+<a href="/register">luo uusi tunnus.</a>
+{% endif %}
+
