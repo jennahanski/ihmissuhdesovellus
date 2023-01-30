@@ -1,4 +1,5 @@
-<h3>Etusivu - Video game list -</h3>
+<h1>- Video game list -</h1>
+<h2>Etusivu</h2>
 
 {% if session.user_id %} 
 Olet kirjautunut sisään tunnuksella <b>{{ session.user_name }}</b>. <a href="/logout">Kirjaudu ulos</a>
@@ -6,4 +7,11 @@ Olet kirjautunut sisään tunnuksella <b>{{ session.user_name }}</b>. <a href="/
 <a href="/login">Kirjaudu sisään</a> tai
 <a href="/register">luo uusi tunnus.</a>
 {% endif %}
+<p>
 
+<h3>Pelikirjasto:</h3>
+<u1>
+    {% for game in games %} 
+    <li><a href="/game/{{ game.id }}">{{ game.name }}</a>
+    {% endfor %}
+</u1>

@@ -1,10 +1,54 @@
 from app import app
 from flask import render_template, redirect, request
 import users
+import games
 
 @app.route("/")
 def index():
-    return render_template("index.html") 
+    return render_template("index.html", games=games.get_all_games()) 
+
+@app.route("/game/<int:game_id>")
+def show_game(game_id):
+    info = games.get_game_info(game_id)
+
+    reviews = games.get_reviews(game_id)
+
+    return render_template("game.html", id=game_id, name=info[0], creator=info[1], reviews=reviews)
+
+@app.route("/review", methods=["POST"])
+def review():
+    users.check_csrf()
+
+    game_id = request.form["game_id"]
+    grade = int(request.form["grade"])
+    if grade < 1 or grade > 10:
+        return render_template("error.html", message="Arvosanan tulee olla välillä 1-10")
+
+    comment = request.form["comment"]
+    if len(comment) > 1000:
+        return render_template("error.html", message="Lyhennä kommenttia")
+
+    if len(comment) == 0:
+        comment = "-"
+    
+    games.add_review(game_id, users.user_id(), comment, grade)
+
+    return redirect("/game/"+str(game_id))
+
+@app.route("/add", methods=["GET", "POST"])
+def add_game():
+    if request.method == "GET":
+        return render_template("add.html")
+    
+    if request.method == "POST":
+        users.check_csrf()
+
+        name = request.form["name"]
+        if len(name) < 1 or len(name) > 20:
+            return render_template("error.html", message="Nimen tulee olla 1-20 merkkiä pitkä.")
+        
+        game_id = games.add_game(name, users.user_id())
+        return redirect("/game/"+str(game_id))
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
