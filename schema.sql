@@ -7,7 +7,8 @@ CREATE TABLE users (
 CREATE TABLE games (
     id SERIAL PRIMARY KEY,
     creator_id INTEGER REFERENCES users,
-    name TEXT
+    name TEXT,
+    visible INTEGER
 );
 
 CREATE TABLE lists (
@@ -20,7 +21,7 @@ CREATE TABLE lists (
 CREATE TABLE reviews (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users,
-    list_id INTEGER REFERENCES lists,
+    game_id INTEGER REFERENCES games,
     comment TEXT,
     grade INTEGER
 );
