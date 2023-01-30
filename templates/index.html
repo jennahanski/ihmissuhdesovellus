@@ -1,21 +1,21 @@
-<h1><a href="/">Video Game List - Frontpage</a></h1>
+<h1><a href="/">Video Game List</a></h1>
 
 {% if session.user_id %} 
-Olet kirjautunut sisään tunnuksella <b>{{ session.user_name }}</b>. <a href="/logout">Kirjaudu ulos</a>
+Logged in as <b>{{ session.user_name }}</b>. <a href="/logout">Log out</a>
 {% else %}
-<a href="/login">Kirjaudu sisään</a> tai
-<a href="/register">luo uusi tunnus.</a>
+<a href="/login">Log in</a> tai
+<a href="/register">Register</a>
 {% endif %}
 <p>
 
-<h3>Etsi peliä</h3>
+<h3>Search for a game</h3>
 <form action="/result" method="GET">
-    Hakusana: <input type="text" name="query">
+    <input type="text" name="query" placeholder="search...">
     <br>
-    <input type="submit" value="Lähetä">
+    <input type="submit" value="Go">
 </form>
 
-<h3>Pelikirjasto:</h3>
+<h3>Game Library:</h3>
 <u1>
     {% for game in games %} 
     <li><a href="/game/{{ game.id }}">{{ game.name }}</a>

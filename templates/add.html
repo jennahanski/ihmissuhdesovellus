@@ -1,12 +1,12 @@
-<h1>Lisää uusi peli</h1>
+<h1>Add new game</h1>
 
 <form action="/add" method="POST">
-    <p>Pelin nimi:<br>
+    <p>Name:<br>
     <input type="text" name="name" minlenght="1" maxlength="20"></p>
 
-    <input type="submit" value="Lähetä">
+    <input type="submit" value="Submit">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 
 <p>
-<a href="/">Palaa etusivulle</a>
+<a href="/">Return</a>

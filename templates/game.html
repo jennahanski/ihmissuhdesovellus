@@ -1,11 +1,11 @@
 <h1>{{ name }}</h1>
 
 <u1>
-    <li> Lisääjä: {{ creator }}
+    <li> Added by: {{ creator }}
 </u1>
 
 {% if reviews %} 
-<h2>Arvostelut</h2>
+<h2>Reviews</h2>
 {% endif %} 
 
 <u1>
@@ -15,9 +15,9 @@
 </u1>
 
 {% if session.user_id %} 
-<h2>Arvostele peli</h2>
+<h2>Review the game</h2>
 <form action="/review" method="POST">
-    Arvosana:
+    Rating:
     <select name="grade">
         <option value="1">1
         <option value="2">2
@@ -31,13 +31,13 @@
         <option value="10">10
     </select>
     <p>
-    Kommentti:<br>
+    Comment:<br>
     <textarea name="comment" rows="4" cols="40" maxlength="1000"></textarea>
-    <p><input type="submit" value="Lähetä">
+    <p><input type="submit" value="Send">
     <input type="hidden" name="game_id" value="{{ id }}">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 {% endif %} 
 
 <p>
-<a href="/">Palaa etusivulle</a>
+<a href="/">Return to front page</a>

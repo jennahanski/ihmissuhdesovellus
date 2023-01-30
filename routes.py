@@ -29,11 +29,11 @@ def review():
     game_id = request.form["game_id"]
     grade = int(request.form["grade"])
     if grade < 1 or grade > 10:
-        return render_template("error.html", message="Arvosanan tulee olla välillä 1-10")
+        return render_template("error.html", message="The grade must be between 1 and 10")
 
     comment = request.form["comment"]
     if len(comment) > 1000:
-        return render_template("error.html", message="Lyhennä kommenttia")
+        return render_template("error.html", message="Comment is too long")
 
     if len(comment) == 0:
         comment = "-"
@@ -52,7 +52,7 @@ def add_game():
 
         name = request.form["name"]
         if len(name) < 1 or len(name) > 20:
-            return render_template("error.html", message="Nimen tulee olla 1-20 merkkiä pitkä.")
+            return render_template("error.html", message="Length of the name must be between 1 and 20 characters")
         
         game_id = games.add_game(name, users.user_id())
         return redirect("/game/"+str(game_id))
@@ -65,17 +65,17 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         if len(username) < 2 or len(username) > 20:
-            return render_template("error.html", message="Tunnuksen on oltava 2-20 merkkiä pitkä.")
+            return render_template("error.html", message="Username must be between 2 and 20 characters")
         
         password1 = request.form["password1"]
         password2 = request.form["password2"]
         if password1 != password2:
-            return render_template("error.html", message="Salasanat eivät täsmää.")
+            return render_template("error.html", message="The passwords don't match")
         if password1 == "":
-            return render_template("error.html", message="Salasana ei voi olla tyhjä.")
+            return render_template("error.html", message="Password can't be empty")
     
     if not users.register(username, password1):
-        return render_template("error.html", message="Rekisteröinti epäonnistui.")
+        return render_template("error.html", message="Registration failed")
     return redirect("/")
 
 @app.route("/login", methods=["GET", "POST"])
@@ -87,7 +87,7 @@ def login():
         password = request.form["password"]
 
     if not users.login(username, password):
-        return render_template("error.html", message="Antamasi tunnus tai salasana on virheellinen")
+        return render_template("error.html", message="Incorrect username or password")
     return redirect("/")
 
 @app.route("/logout")

@@ -1,12 +1,12 @@
-<h1>Rekisteröidy</h1>
+<h1>Create a new username</h1>
 
 <form action="/register" method="post">
-    Tunnus: <br><input type="text" name="username" minlength="2" maxlength="20">
+    <br><input type="text" name="username" placeholder="Username" minlength="2" maxlength="20">
     <p>
-    Salasana: <br><input type="password" name="password1">
+    <br><input type="password" name="password1" placeholder="Password">
     <p>
-    Salasana uudelleen: <br><input type="password" name="password2">
-    <p><input type="submit" value="Luo tunnus">
+    <br><input type="password" name="password2" placeholder="Confirm your password">
+    <p><input type="submit" value="Register">
 </form>
 <p>
-<a href="/login">Takaisin kirjautumiseen</a>
+<a href="/login">Return</a>
