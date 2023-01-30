@@ -57,6 +57,20 @@ def add_game():
         game_id = games.add_game(name, users.user_id())
         return redirect("/game/"+str(game_id))
 
+@app.route("/remove", methods=["GET", "POST"])
+def remove_review():
+    if request.method == "GET":
+        my_reviews = games.get_my_reviews(users.user_id())
+        return render_template("remove.html", content=my_reviews)
+
+    if request.method == "POST":
+        users.check_csrf()
+        if "review" in request.form:
+            review = request.form["review"]
+            games.remove_review(review, users.user_id())
+
+    return redirect("/")
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "GET":

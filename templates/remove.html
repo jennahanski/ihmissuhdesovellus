@@ -1,0 +1,15 @@
+<h3>Remove a review</h3>
+<form action="/remove" method="POST">
+    <p>Select a review to remove:<br>
+        
+    {% for review in content %} 
+    <input type="radio" name="review" value="{{ review.id }}"> "{{ review.comment }}" <br>
+    {% endfor %} 
+
+    <p>
+
+    <input type="submit" value="Remove">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+</form>
+
+<p><a href="/">Return</a></p>
