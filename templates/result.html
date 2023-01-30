@@ -1,0 +1,9 @@
+{% if results %} 
+<h2>Tulokset:</h2>
+{% endif %} 
+
+<u1>
+    {% for game in results %} 
+    <li><a href="/game/{{ game[0] }}">{{ game[1] }}</a>
+    {% endfor %}
+</u1>

@@ -1,4 +1,5 @@
 from app import app
+from db import db
 from flask import render_template, redirect, request
 import users
 import games
@@ -6,6 +7,12 @@ import games
 @app.route("/")
 def index():
     return render_template("index.html", games=games.get_all_games()) 
+
+@app.route("/result", methods=["GET"])
+def result():
+    query = request.args["query"]
+
+    return render_template("result.html", results=games.search_game(query))
 
 @app.route("/game/<int:game_id>")
 def show_game(game_id):

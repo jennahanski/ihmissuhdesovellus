@@ -1,5 +1,4 @@
-<h1>- Video game list -</h1>
-<h2>Etusivu</h2>
+<h1><a href="/">Video Game List - Frontpage</a></h1>
 
 {% if session.user_id %} 
 Olet kirjautunut sisään tunnuksella <b>{{ session.user_name }}</b>. <a href="/logout">Kirjaudu ulos</a>
@@ -8,6 +7,13 @@ Olet kirjautunut sisään tunnuksella <b>{{ session.user_name }}</b>. <a href="/
 <a href="/register">luo uusi tunnus.</a>
 {% endif %}
 <p>
+
+<h3>Etsi peliä</h3>
+<form action="/result" method="GET">
+    Hakusana: <input type="text" name="query">
+    <br>
+    <input type="submit" value="Lähetä">
+</form>
 
 <h3>Pelikirjasto:</h3>
 <u1>

@@ -4,6 +4,11 @@ def get_all_games():
     sql = "SELECT id, name FROM games WHERE visible=1 ORDER BY name"
     return db.session.execute(sql).fetchall()
 
+def search_game(query):
+    sql = "SELECT id, name FROM games WHERE lower(name) LIKE :query"
+    result = db.session.execute(sql, {"query":"%"+query+"%"})
+    return result.fetchall()
+
 def add_game(name, creator_id):
     sql = "INSERT INTO games (name, creator_id, visible) VALUES (:name, :creator_id, 1) RETURNING id"
     result = db.session.execute(sql, {"name":name, "creator_id":creator_id})
