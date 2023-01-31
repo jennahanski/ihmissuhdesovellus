@@ -34,6 +34,9 @@ def logout():
 def user_id():
     return session.get("user_id", 0)
 
+def username():
+    return session.get("user_name", "")
+
 def check_csrf():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)

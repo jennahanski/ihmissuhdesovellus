@@ -8,6 +8,13 @@ import games
 def index():
     return render_template("index.html", games=games.get_all_games()) 
 
+@app.route("/user/<username>")
+def userpage(username):
+    user_id = users.user_id()
+    my_reviews = games.get_my_reviews(user_id)
+
+    return render_template("userpage.html", name=username, reviews=my_reviews, id=user_id)
+
 @app.route("/result", methods=["GET"])
 def result():
     query = request.args["query"]
@@ -77,8 +84,9 @@ def remove_review():
     if request.method == "POST":
         users.check_csrf()
         if "review" in request.form:
-            review = request.form["review"]
-            games.remove_review(review, users.user_id())
+            choices = request.form.getlist["review"]
+            for review in choices:
+                games.remove_review(review, users.user_id())
 
     return redirect("/")
 

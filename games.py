@@ -25,7 +25,7 @@ def get_reviews(game_id):
     return db.session.execute(sql, {"game_id":game_id}).fetchall()
 
 def get_my_reviews(user_id):
-    sql = "SELECT R.id, R.comment, R.grade FROM reviews R WHERE R.user_id=:user_id AND visible=1 ORDER BY R.id"
+    sql = "SELECT R.id, R.comment, R.grade, G.name FROM reviews R, games G WHERE R.user_id=:user_id AND R.game_id=G.id AND visible=1 ORDER BY R.id"
     return db.session.execute(sql, {"user_id":user_id}).fetchall()
 
 def check_for_review(user_id, game_id):
