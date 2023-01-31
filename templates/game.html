@@ -10,12 +10,13 @@
 
 <u1>
     {% for entry in reviews %}
-    <li> {{ entry[0] }} {{ entry[2] }}/10: "{{ entry[1] }}"
+    <li> {{ entry[0] }} {{ entry[2] }}/10: "{{ entry[1] }}" 
     {% endfor %}
 </u1>
+<p>
 
 {% if session.user_id %} 
-<h2>Review the game</h2>
+<h2>{{ message }}</h2>
 <form action="/review" method="POST">
     Rating:
     <select name="grade">

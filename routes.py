@@ -20,7 +20,13 @@ def show_game(game_id):
 
     reviews = games.get_reviews(game_id)
 
-    return render_template("game.html", id=game_id, name=info[0], creator=info[1], reviews=reviews)
+    check = games.check_for_review(users.user_id(), game_id)
+    if check:
+        message = "Edit your review"
+    else:
+        message = "Add a review"
+
+    return render_template("game.html", id=game_id, name=info[0], creator=info[1], reviews=reviews, message=message)
 
 @app.route("/review", methods=["POST"])
 def review():
@@ -28,6 +34,7 @@ def review():
 
     game_id = request.form["game_id"]
     grade = int(request.form["grade"])
+
     if grade < 1 or grade > 10:
         return render_template("error.html", message="The grade must be between 1 and 10")
 
@@ -37,8 +44,12 @@ def review():
 
     if len(comment) == 0:
         comment = "-"
-    
-    games.add_review(game_id, users.user_id(), comment, grade)
+
+    check = games.check_for_review(users.user_id(), game_id)
+    if check:
+        games.edit_review(check[0], comment, grade)
+    else:
+        games.add_review(game_id, users.user_id(), comment, grade)
 
     return redirect("/game/"+str(game_id))
 

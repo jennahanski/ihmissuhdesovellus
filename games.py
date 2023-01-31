@@ -28,10 +28,19 @@ def get_my_reviews(user_id):
     sql = "SELECT R.id, R.comment, R.grade FROM reviews R WHERE R.user_id=:user_id AND visible=1 ORDER BY R.id"
     return db.session.execute(sql, {"user_id":user_id}).fetchall()
 
+def check_for_review(user_id, game_id):
+    sql = "SELECT R.id FROM reviews R, users U WHERE R.user_id=:user_id AND R.game_id=:game_id"
+    return db.session.execute(sql, {"user_id":user_id, "game_id":game_id}).fetchone()
+
 def add_review(game_id, user_id, comment, grade):
     sql = "INSERT INTO reviews (user_id, game_id, comment, grade, visible) \
             VALUES (:user_id, :game_id, :comment, :grade, 1)"
     db.session.execute(sql, {"user_id":user_id, "game_id":game_id, "comment":comment, "grade":grade})
+    db.session.commit()
+
+def edit_review(r_id, comment, grade):
+    sql = "UPDATE reviews SET comment=:comment, grade=:grade WHERE id=:id AND visible=1"
+    db.session.execute(sql, {"comment":comment, "grade":grade, "id":r_id})
     db.session.commit()
 
 def remove_review(r_id, user_id):
