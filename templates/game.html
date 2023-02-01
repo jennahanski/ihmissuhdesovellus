@@ -1,7 +1,11 @@
+{% extends "layout.html" %}
+{% block content %}
+
 <h1>{{ name }}</h1>
 
 <u1>
     <li> Added by: {{ creator }}
+    <li> Release year: {{ year }}
 </u1>
 
 {% if reviews %} 
@@ -16,7 +20,7 @@
 <p>
 
 {% if session.user_id %} 
-<h2>{{ message }}</h2>
+<h3>{{ message }}</h3>
 <form action="/review" method="POST">
     Rating:
     <select name="grade">
@@ -38,7 +42,8 @@
     <input type="hidden" name="game_id" value="{{ id }}">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
-{% endif %} 
 
+<a href="/addtolist">Add the game to your list</a>
+{% endif %} 
 <p>
-<a href="/">Return to front page</a>
+{% endblock %}

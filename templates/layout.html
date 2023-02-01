@@ -1,0 +1,20 @@
+<!doctype html>
+<title>Video Game List - {% block title %}{% endblock %}</title>
+<a href="/"><h1>Video Game List</h1></a>
+<h4>Search for a game:</h4>
+<form action="/result" method="GET">
+    <input type="text" name="query" placeholder="search...">
+    <br>
+    <input type="submit" value="Go">
+</form>
+<hr>
+{% if session.user_id %} 
+Logged in as <a href="/user/{{ session.user_name }}">{{ session.user_name}}</a>. <a href="/logout">Log out</a>
+{% else %}
+<a href="/login">Log in</a> or
+<a href="/register">Register</a>
+{% endif %}
+<p>
+<hr>
+{% block content %}{% endblock %} 
+<hr>

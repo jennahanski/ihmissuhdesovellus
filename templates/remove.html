@@ -1,3 +1,5 @@
+{% extend "layout.html" %}
+{% block content %}
 <h3>Remove a review</h3>
 <form action="/remove" method="POST">
     <p>Select a review to remove:<br>
@@ -12,4 +14,4 @@
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 
-<p><a href="/">Return</a></p>
+{% endblock %}

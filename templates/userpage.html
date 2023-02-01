@@ -1,3 +1,6 @@
+{% extends "layout.html" %} 
+{% block content %}
+
 {{ name }}
 
 {% if reviews %} 
@@ -14,4 +17,4 @@
 {% if session.user_id == id %}
 <a href="/remove">Delete reviews</a>
 {% endif %}
-<a href="/"> | Return</a>
+{% endblock %}
