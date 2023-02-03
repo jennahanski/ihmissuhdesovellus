@@ -7,14 +7,18 @@ CREATE TABLE users (
 CREATE TABLE games (
     id SERIAL PRIMARY KEY,
     creator_id INTEGER REFERENCES users,
-    name TEXT
+    name TEXT,
+    year INTEGER
 );
 
-CREATE TABLE lists (
+CREATE TABLE stats (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users,
     game_id INTEGER REFERENCES games,
-    name TEXT
+    status INTEGER,
+    playtime INTEGER,
+    platform TEXT,
+    favorite INTEGER
 );
 
 CREATE TABLE reviews (
@@ -24,4 +28,11 @@ CREATE TABLE reviews (
     comment TEXT,
     grade INTEGER,
     visible INTEGER
+);
+
+CREATE TABLE tags (
+    id SERIAL PRIMARY KEY,
+    creator_id INTEGER REFERENCES users,
+    game_id INTEGER REFERENCES games,
+    name TEXT UNIQUE
 );

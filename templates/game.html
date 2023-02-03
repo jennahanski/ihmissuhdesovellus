@@ -1,6 +1,35 @@
 {% extends "layout.html" %}
 {% block content %}
 
+{% if session.user_id %}
+<script>
+    function message() {
+        alert("Added to favorites")
+    }
+    function message2() {
+        alert("Removed from favorites")
+    }
+</script>
+{% if not favorite %}
+<form action="/game/{{ id }}" method="POST">
+    <label for="submit">
+    Add to favorites:
+    </label>
+    <button type="submit" onclick="message()">Add</button>
+    <input type="hidden" name="fav" value="1">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+</form>
+{% else %}
+<form action="/game/{{ id }}" method="POST">
+    <label for="submit">
+    Remove from favorites:
+    </label>
+    <button type="submit" onclick="message2()">Remove</button>
+    <input type="hidden" name="fav" value="0">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+{% endif %}
+{% endif %} 
+
 <h1>{{ name }}</h1>
 
 <u1>
@@ -39,11 +68,18 @@
     Comment:<br>
     <textarea name="comment" rows="4" cols="40" maxlength="1000"></textarea>
     <p><input type="submit" value="Send">
-    <input type="hidden" name="game_id" value="{{ id }}">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 
-<a href="/addtolist">Add the game to your list</a>
+<p>Add the game to your list:</p>
+<form action="/game/{{ id }}" method="POST">
+    <select name="list">
+        <option value="0">To Play
+        <option value="1">Played games
+    </select>
+    <input type="submit" value="Send">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+</form>
 {% endif %} 
 <p>
 {% endblock %}

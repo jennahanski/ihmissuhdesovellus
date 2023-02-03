@@ -9,16 +9,38 @@ def search_game(query):
     result = db.session.execute(sql, {"query":"%"+query+"%"})
     return result.fetchall()
 
-def add_game(name, creator_id):
-    sql = "INSERT INTO games (name, creator_id) VALUES (:name, :creator_id) RETURNING id"
-    result = db.session.execute(sql, {"name":name, "creator_id":creator_id})
+def add_game(name, year, creator_id):
+    sql = "INSERT INTO games (name, creator_id, year) VALUES (:name, :creator_id, :year) RETURNING id"
+    result = db.session.execute(sql, {"name":name, "creator_id":creator_id, "year":year})
     game_id = result.fetchone()[0]
     db.session.commit()
     return game_id
 
 def get_game_info(game_id):
-    sql = "SELECT G.name, U.username FROM games G, users U WHERE G.id=:game_id AND G.creator_id=U.id"
+    sql = "SELECT G.name, U.username, G.year FROM games G, users U WHERE G.id=:game_id AND G.creator_id=U.id"
     return db.session.execute(sql, {"game_id": game_id}).fetchone()
+
+def add_to_list(game_id, user_id, status, playtime, platform):
+    if check_for_list(user_id, game_id):
+        sql = "UPDATE stats SET playtime=:playtime, platform=:platform, status=:status WHERE user_id=:user_id AND game_id=:game_id"
+    else:
+        sql = "INSERT INTO stats (user_id, game_id, status, playtime, platform, favorite) VALUES (:user_id, :game_id, :status, :playtime, :platform, 0)"
+
+    db.session.execute(sql, {"user_id":user_id, "game_id":game_id, "status":status, "playtime":playtime, "platform":platform})
+    db.session.commit()
+
+def check_for_list(user_id, game_id):
+    sql = "SELECT S.user_id FROM stats S WHERE S.user_id=:user_id AND S.game_id=:game_id"
+    return db.session.execute(sql, {"user_id":user_id, "game_id":game_id}).fetchone()
+
+def add_to_favorites(game_id, user_id, favorite):
+    sql = "UPDATE stats SET favorite=:favorite WHERE user_id=:user_id AND game_id=:game_id"
+    db.session.execute(sql, {"favorite":favorite, "user_id":user_id, "game_id":game_id})
+    db.session.commit()
+
+def is_favorite(user_id, game_id):
+    sql = "SELECT S.user_id FROM stats S WHERE S.favorite=1 AND S.user_id=:user_id AND S.game_id=:game_id"
+    return db.session.execute(sql, {"user_id":user_id, "game_id":game_id}).fetchone()
 
 def get_reviews(game_id):
     sql = "SELECT U.username, R.comment, R.grade FROM reviews R, users U WHERE R.user_id=U.id AND R.game_id=:game_id AND visible=1 ORDER BY R.id"

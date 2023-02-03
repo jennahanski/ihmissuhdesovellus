@@ -21,19 +21,34 @@ def result():
 
     return render_template("result.html", results=games.search_game(query))
 
-@app.route("/game/<int:game_id>")
+@app.route("/game/<int:game_id>", methods=["GET", "POST"])
 def show_game(game_id):
-    info = games.get_game_info(game_id)
+    user_id = users.user_id()
+    favorite = games.is_favorite(user_id, game_id)
 
-    reviews = games.get_reviews(game_id)
+    if request.method == "GET":
+        info = games.get_game_info(game_id)
+        reviews = games.get_reviews(game_id)
+        check = games.check_for_review(user_id, game_id)
+        if check:
+            message = "Edit your review"
+        else:
+            message = "Add a review"
 
-    check = games.check_for_review(users.user_id(), game_id)
-    if check:
-        message = "Edit your review"
-    else:
-        message = "Add a review"
+        return render_template("game.html", id=game_id, name=info[0], creator=info[1], year=info[2], reviews=reviews, message=message, favorite=favorite)
+    
+    if request.method == "POST":
+        users.check_csrf()
+        if request.form["fav"]:
+            favorite= request.form["fav"]
+            games.add_to_favorites(game_id, user_id, favorite)
+            return redirect("/game/"+str(game_id))
+        else:
+            status = request.form["list"]
+            if status == "0":
+                games.add_to_list(game_id, user_id, status, 0, "")
 
-    return render_template("game.html", id=game_id, name=info[0], creator=info[1], reviews=reviews, message=message)
+            return render_template("addtolist.html", id=game_id, status=status)
 
 @app.route("/review", methods=["POST"])
 def review():
@@ -69,11 +84,25 @@ def add_game():
         users.check_csrf()
 
         name = request.form["name"]
-        if len(name) < 1 or len(name) > 20:
-            return render_template("error.html", message="Length of the name must be between 1 and 20 characters")
+        year = request.form["year"]
+        if len(name) < 1 or len(name) > 30:
+            return render_template("error.html", message="Length of the name must be between 1 and 30 characters")
         
-        game_id = games.add_game(name, users.user_id())
+        if len(year) != 4:
+            return render_template("error.html", message="Incorrect year")
+        
+        game_id = games.add_game(name, year, users.user_id())
         return redirect("/game/"+str(game_id))
+
+@app.route("/game/<int:game_id>/addtolist/<int:status>", methods=["POST"])
+def add_to_list(game_id, status):
+    user_id = users.user_id()
+    users.check_csrf()
+    playtime = int(request.form["playtime"])
+    platform = request.form["platform"]
+
+    games.add_to_list(game_id, user_id, status, playtime, platform)
+    return redirect("/game/"+str(game_id))
 
 @app.route("/remove", methods=["GET", "POST"])
 def remove_review():
