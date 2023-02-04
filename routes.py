@@ -10,10 +10,12 @@ def index():
 
 @app.route("/user/<username>")
 def userpage(username):
-    user_id = users.user_id()
-    my_reviews = games.get_my_reviews(user_id)
+    user_id = users.get_user_id(username)
+    reviews = games.get_my_reviews(user_id)
+    lists = games.get_my_lists(user_id)
+    playtime = games.get_playtime(user_id)[0]
 
-    return render_template("userpage.html", name=username, reviews=my_reviews, id=user_id)
+    return render_template("userpage.html", name=username, reviews=reviews, lists=lists, id=user_id, playtime=playtime)
 
 @app.route("/result", methods=["GET"])
 def result():
@@ -39,8 +41,8 @@ def show_game(game_id):
     
     if request.method == "POST":
         users.check_csrf()
-        if request.form["fav"]:
-            favorite= request.form["fav"]
+        if "fav" in request.form:
+            favorite = request.form["fav"]
             games.add_to_favorites(game_id, user_id, favorite)
             return redirect("/game/"+str(game_id))
         else:
@@ -85,8 +87,8 @@ def add_game():
 
         name = request.form["name"]
         year = request.form["year"]
-        if len(name) < 1 or len(name) > 30:
-            return render_template("error.html", message="Length of the name must be between 1 and 30 characters")
+        if len(name) < 1 or len(name) > 40:
+            return render_template("error.html", message="Length of the name must be between 1 and 40 characters")
         
         if len(year) != 4:
             return render_template("error.html", message="Incorrect year")

@@ -33,6 +33,14 @@ def check_for_list(user_id, game_id):
     sql = "SELECT S.user_id FROM stats S WHERE S.user_id=:user_id AND S.game_id=:game_id"
     return db.session.execute(sql, {"user_id":user_id, "game_id":game_id}).fetchone()
 
+def get_my_lists(user_id):
+    sql = "SELECT S.game_id, G.name, S.status, S.playtime, S.platform, S.favorite FROM stats S, games G WHERE S.user_id=:user_id AND S.game_id=G.id ORDER BY S.id"
+    return db.session.execute(sql, {"user_id":user_id}).fetchall()
+
+def get_playtime(user_id):
+    sql = "SELECT SUM(S.playtime) FROM stats S WHERE S.user_id=:user_id"
+    return db.session.execute(sql, {"user_id":user_id}).fetchone()
+
 def add_to_favorites(game_id, user_id, favorite):
     sql = "UPDATE stats SET favorite=:favorite WHERE user_id=:user_id AND game_id=:game_id"
     db.session.execute(sql, {"favorite":favorite, "user_id":user_id, "game_id":game_id})
@@ -47,7 +55,7 @@ def get_reviews(game_id):
     return db.session.execute(sql, {"game_id":game_id}).fetchall()
 
 def get_my_reviews(user_id):
-    sql = "SELECT R.id, R.comment, R.grade, G.name FROM reviews R, games G WHERE R.user_id=:user_id AND R.game_id=G.id AND visible=1 ORDER BY R.id"
+    sql = "SELECT R.id, R.comment, R.grade, G.name, R.game_id FROM reviews R, games G WHERE R.user_id=:user_id AND R.game_id=G.id AND visible=1 ORDER BY R.id"
     return db.session.execute(sql, {"user_id":user_id}).fetchall()
 
 def check_for_review(user_id, game_id):

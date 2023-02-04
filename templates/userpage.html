@@ -1,20 +1,57 @@
 {% extends "layout.html" %} 
 {% block content %}
 
-{{ name }}
+<a href="/user/{{ name }}"><h2>{{ name }}</h2></a>
+total playtime: {{ playtime }} hours
 
 {% if reviews %} 
-<h3>{{ name }}'s reviews</h3>
+<h3>Reviews</h3>
 {% endif %} 
 
 <u1>
     {% for entry in reviews %}
-    <li> {{ entry[3] }} {{ entry[2] }}/10: "{{ entry[1] }}" 
+    <li> <a href="/game/{{ entry[4] }}">{{ entry[3] }}</a> {{ entry[2] }}/10: "{{ entry[1] }}" 
     {% endfor %}
 </u1>
 <p>
 
 {% if session.user_id == id %}
-<a href="/remove">Delete reviews</a>
+<a href="/remove" class="button">Delete reviews</a>
 {% endif %}
+
+{% if lists %} 
+<h3>Lists</h3>
+{% endif %}
+
+<u1>
+    <b>Favorite games:</b>
+    <p>
+    {% for entry in lists %}
+    {% if entry[5] == 1 %}
+    <li> <a href="/game/{{ entry[0] }}">{{ entry[1] }}</a>  
+    {% endif %}
+    {% endfor %}
+</u1>
+<p>
+<u1>
+    <b>To Play:</b>
+    <p>
+    {% for entry in lists %}
+    {% if entry[2] == 0 %}
+    <li> <a href="/game/{{ entry[0] }}">{{ entry[1] }}</a>
+    {% endif %}
+    {% endfor %}
+</u1>
+<p>
+<u1>
+    <b>Played games:</b>
+    {% for entry in lists %}
+    {% if entry[2] == 1 %}
+    <li> <a href="/game/{{ entry[0] }}">{{ entry[1] }}</a>
+    <li>Playtime: {{ entry[3] }} hours
+    <li>Platform: {{ entry[4] }}
+    <p>    
+    {% endif %}
+    {% endfor %}
+</u1>
 {% endblock %}
