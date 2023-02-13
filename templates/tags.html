@@ -1,0 +1,21 @@
+{% extends "layout.html" %} 
+{% block content %} 
+
+{% if tags %} 
+Your tags for game {{ name }}
+{% endif %}
+<p>
+{% for tag in tags %} 
+    {{ tag[1] }}  
+{% endfor %}
+<p>
+Add tags:
+<form action="/{{ id }}/add_tag" method="POST">
+    <input type="text" name="tag" placeholder="give a tag and press send" minlength="1" maxlength="500"></textarea>
+    <input type="submit" value="Send">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+</form>
+<p>
+<a href="/game/{{ id }}">Return</a>
+
+{% endblock %}

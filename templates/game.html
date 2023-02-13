@@ -81,4 +81,11 @@
 </form>
 {% endif %} 
 <p>
+{% if tags %}
+tags
+{% endif %}
+<p>
+{% for tag in tags %} 
+    {{ tag[0] }}  ({{ tag[1] }}) 
+{% endfor %}
 {% endblock %}

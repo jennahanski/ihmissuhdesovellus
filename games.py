@@ -56,7 +56,7 @@ def get_reviews(game_id):
 
 def get_average(game_id):
     try:
-        sql = "SELECT SUM(R.grade)/COUNT(R.grade) FROM reviews R, users U WHERE R.user_id=U.id AND R.game_id=:game_id AND visible=1 GROUP BY R.id"
+        sql = "SELECT SUM(R.grade)::float/COUNT(R.grade) FROM reviews R WHERE R.game_id=:game_id AND visible=1"
         return db.session.execute(sql, {"game_id":game_id}).fetchone()[0]
     except:
         return 0
@@ -85,15 +85,19 @@ def remove_review(r_id, user_id):
     db.session.execute(sql, {"id":r_id, "user_id":user_id})
     db.session.commit()
 
-def check_tag(name):
+def check_tag(name, user_id, game_id):
     try:
-        sql = "SELECT id FROM tags WHERE name=:name"
-        return db.session.execute(sql, {"name":name}).fetchone()
+        sql = "SELECT id FROM tags WHERE name=:name AND creator_id=:user_id AND game_id=:game_id"
+        return db.session.execute(sql, {"name":name, "user_id":user_id, "game_id":game_id}).fetchone()
     except:
         return False
 
-def get_tags(game_id):
-    sql = "SELECT id, name, creator_id FROM tags WHERE game_id=:game_id"
+def get_my_tags(game_id, user_id):
+    sql = "SELECT id, name, creator_id FROM tags WHERE game_id=:game_id AND creator_id=:user_id ORDER BY id"
+    return db.session.execute(sql, {"game_id":game_id, "user_id":user_id}).fetchall()
+
+def get_all_tags(game_id):
+    sql = "SELECT T.name, COUNT(U.id) FROM tags T LEFT JOIN users U ON U.id=T.creator_id WHERE game_id=:game_id GROUP BY T.name"
     return db.session.execute(sql, {"game_id":game_id}).fetchall()
 
 def add_tags(creator_id, game_id, name):
