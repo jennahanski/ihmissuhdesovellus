@@ -31,13 +31,14 @@ def show_game(game_id):
     if request.method == "GET":
         info = games.get_game_info(game_id)
         reviews = games.get_reviews(game_id)
+        average = games.get_average(game_id)
         check = games.check_for_review(user_id, game_id)
         if check:
             message = "Edit your review"
         else:
             message = "Add a review"
 
-        return render_template("game.html", id=game_id, name=info[0], creator=info[1], year=info[2], reviews=reviews, message=message, favorite=favorite)
+        return render_template("game.html", id=game_id, name=info[0], creator=info[1], year=info[2], reviews=reviews, avg=average, message=message, favorite=favorite)
     
     if request.method == "POST":
         users.check_csrf()
@@ -76,6 +77,31 @@ def review():
         games.add_review(game_id, users.user_id(), comment, grade)
 
     return redirect("/game/"+str(game_id))
+
+@app.route("/<int:game_id>/add_tag", methods = ["GET", "POST"])
+def add_tags(game_id):
+    if request.method == "GET":
+        tags = games.get_tags(game_id)
+        name = games.get_game_info(game_id)[0]
+        return render_template("tags.html", id=game_id, tags=tags, name=name)
+
+    if request.method == "POST":
+        #if "tag_id" in request.form:
+        #    tag_id = request.form["tag_id"]
+        #    games.remove_tag(tag_id, game_id)
+
+        users.check_csrf()
+        tag = request.form["tag"]
+        user_id = users.user_id()
+
+        exists = games.check_tag(tag)
+        if exists:
+            return render_template("error.html", message="Tag already exists.")
+    
+        games.add_tags(user_id, game_id, tag)
+
+        return redirect("/"+str(game_id)+"/add_tag")
+
 
 @app.route("/add", methods=["GET", "POST"])
 def add_game():

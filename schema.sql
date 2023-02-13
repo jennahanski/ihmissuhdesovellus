@@ -34,5 +34,5 @@ CREATE TABLE tags (
     id SERIAL PRIMARY KEY,
     creator_id INTEGER REFERENCES users,
     game_id INTEGER REFERENCES games,
-    name TEXT UNIQUE
+    name TEXT
 );

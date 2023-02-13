@@ -51,8 +51,15 @@ def is_favorite(user_id, game_id):
     return db.session.execute(sql, {"user_id":user_id, "game_id":game_id}).fetchone()
 
 def get_reviews(game_id):
-    sql = "SELECT U.username, R.comment, R.grade FROM reviews R, users U WHERE R.user_id=U.id AND R.game_id=:game_id AND visible=1 ORDER BY R.id"
+    sql = "SELECT U.username, R.comment, R.grade FROM reviews R, users U WHERE R.user_id=U.id AND R.game_id=:game_id AND visible=1 ORDER BY U.username"
     return db.session.execute(sql, {"game_id":game_id}).fetchall()
+
+def get_average(game_id):
+    try:
+        sql = "SELECT SUM(R.grade)/COUNT(R.grade) FROM reviews R, users U WHERE R.user_id=U.id AND R.game_id=:game_id AND visible=1 GROUP BY R.id"
+        return db.session.execute(sql, {"game_id":game_id}).fetchone()[0]
+    except:
+        return 0
 
 def get_my_reviews(user_id):
     sql = "SELECT R.id, R.comment, R.grade, G.name, R.game_id FROM reviews R, games G WHERE R.user_id=:user_id AND R.game_id=G.id AND visible=1 ORDER BY R.id"
@@ -77,4 +84,19 @@ def remove_review(r_id, user_id):
     sql = "UPDATE reviews SET visible=0 WHERE id=:id AND user_id=:user_id"
     db.session.execute(sql, {"id":r_id, "user_id":user_id})
     db.session.commit()
-    
+
+def check_tag(name):
+    try:
+        sql = "SELECT id FROM tags WHERE name=:name"
+        return db.session.execute(sql, {"name":name}).fetchone()
+    except:
+        return False
+
+def get_tags(game_id):
+    sql = "SELECT id, name, creator_id FROM tags WHERE game_id=:game_id"
+    return db.session.execute(sql, {"game_id":game_id}).fetchall()
+
+def add_tags(creator_id, game_id, name):
+    sql = "INSERT INTO tags (creator_id, game_id, name) VALUES (:creator_id, :game_id, :name) RETURNING id"
+    tag_id = db.session.execute(sql, {"creator_id":creator_id, "game_id":game_id, "name":name}).fetchone()
+    db.session.commit()

@@ -1,6 +1,9 @@
 {% extends "layout.html" %} 
 {% block content %}
+
+{% if session.user_id %}
 <a href="/add">Add</a> a new game to the library
+{% endif %}
 
 <h3>Game Library:</h3>
 <u1>
