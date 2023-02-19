@@ -30,8 +30,11 @@ def add_to_list(game_id, user_id, status, playtime, platform):
     db.session.commit()
 
 def check_for_list(user_id, game_id):
-    sql = "SELECT S.user_id FROM stats S WHERE S.user_id=:user_id AND S.game_id=:game_id"
-    return db.session.execute(sql, {"user_id":user_id, "game_id":game_id}).fetchone()
+    try:
+        sql = "SELECT user_id FROM stats S WHERE user_id=:user_id AND game_id=:game_id"
+        return db.session.execute(sql, {"user_id":user_id, "game_id":game_id}).fetchone()[0]
+    except:
+        return False
 
 def get_my_lists(user_id):
     sql = "SELECT S.game_id, G.name, S.status, S.playtime, S.platform, S.favorite FROM stats S, games G WHERE S.user_id=:user_id AND S.game_id=G.id ORDER BY S.id"
@@ -42,7 +45,10 @@ def get_playtime(user_id):
     return db.session.execute(sql, {"user_id":user_id}).fetchone()
 
 def add_to_favorites(game_id, user_id, favorite):
-    sql = "UPDATE stats SET favorite=:favorite WHERE user_id=:user_id AND game_id=:game_id"
+    if check_for_list(user_id, game_id):
+        sql = "UPDATE stats SET favorite=:favorite WHERE user_id=:user_id AND game_id=:game_id"
+    else:
+        sql = "INSERT INTO stats (user_id, game_id, favorite) VALUES (:user_id, :game_id, :favorite)"
     db.session.execute(sql, {"favorite":favorite, "user_id":user_id, "game_id":game_id})
     db.session.commit()
 
