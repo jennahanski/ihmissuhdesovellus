@@ -1,43 +1,49 @@
 {% extends "layout.html" %} 
 {% block content %} 
 
-{% if session.user_id %}
-{% if status == "1" %}
-<form action="/game/{{ id }}/addtolist/{{ status }}" method="POST">
-    <input type="text" name="playtime" placeholder="playtime in hours...">
-    <p>
-    Choose a platform:
-    <select name="platform">
-        <option value="NES/SNES">NES/SNES
-        <option value="Nintendo 64">Nintendo 64
-        <option value="Nintendo DS">Nintendo DS
-        <option value="Nintendo 3DS">Nintendo 3DS
-        <option value="Nintendo Switch">Nintendo Switch
-        <option value="GameCube">GameCube
-        <option value="Game Boy (Color/Advance)">Game Boy (Color/Advance)
-        <option value="PC">PC
-        <option value="Android">Android
-        <option value="iOS">iOS
-        <option value="Wii">Wii
-        <option value="Wii U">Wii U
-        <option value="PlayStation">PlayStation
-        <option value="PlayStation 2">PlayStation 2
-        <option value="PlayStation 3">PlayStation 3
-        <option value="PlayStation 4">PlayStation 4
-        <option value="PlayStation 5">PlayStation 5
-        <option value="PlayStation Vita">PlayStation Vita
-        <option value="PSP">PSP
-        <option value="Xbox">Xbox
-        <option value="Xbox 360">Xbox 360
-        <option value="Xbox One">Xbox One
-        <option value="Xbox Series X">Xbox Series X
-    </select>
-    <input type="submit" value="Send">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-</form>
-{% else %} 
-The game was added to the list "To play" succesfully!
-{% endif %}
-<a href="/game/{{ id }}">Return</a>
-{% endif %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            {% if session.user_id %}
+            {% if status == "1" %}
+            <form action="/game/{{ id }}/addtolist/{{ status }}" method="POST">
+                <input type="text" name="playtime" placeholder="playtime in hours..."><br>
+                <p>
+                Choose a platform:<br>
+                <select name="platform">
+                    <option value="NES/SNES">NES/SNES
+                    <option value="Nintendo 64">Nintendo 64
+                    <option value="Nintendo DS">Nintendo DS
+                    <option value="Nintendo 3DS">Nintendo 3DS
+                    <option value="Nintendo Switch">Nintendo Switch
+                    <option value="GameCube">GameCube
+                    <option value="Game Boy (Color/Advance)">Game Boy (Color/Advance)
+                    <option value="PC">PC
+                    <option value="Android">Android
+                    <option value="iOS">iOS
+                    <option value="Wii">Wii
+                    <option value="Wii U">Wii U
+                    <option value="PlayStation">PlayStation
+                    <option value="PlayStation 2">PlayStation 2
+                    <option value="PlayStation 3">PlayStation 3
+                    <option value="PlayStation 4">PlayStation 4
+                    <option value="PlayStation 5">PlayStation 5
+                    <option value="PlayStation Vita">PlayStation Vita
+                    <option value="PSP">PSP
+                    <option value="Xbox">Xbox
+                    <option value="Xbox 360">Xbox 360
+                    <option value="Xbox One">Xbox One
+                    <option value="Xbox Series X">Xbox Series X
+                </select>
+                <input type="submit" value="Send">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            </form>
+            {% else %} 
+            The game was added to the list "To play" succesfully!
+            {% endif %}
+            <a href="/game/{{ id }}">Return</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}

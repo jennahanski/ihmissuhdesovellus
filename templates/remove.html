@@ -1,17 +1,23 @@
 {% extends "layout.html" %}
 {% block content %}
-<h3>Remove a review</h3>
-<form action="/remove" method="POST">
-    <p>Select a review to remove:<br>
 
-    {% for review in content %} 
-    <input type="checkbox" name="review" value="{{ review.id }}" multiple="multiple"> {{ review[3] }}: {{ review.grade}}/10, "{{ review.comment }}" <br>
-    {% endfor %} 
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>Remove a review</h3>
+            <form action="/remove" method="POST">
+                <p>Select a review to remove:<br>
 
-    <p>
+                {% for review in content %} 
+                <input type="checkbox" name="review" value="{{ review.id }}" multiple="multiple"> {{ review[3] }}: {{ review.grade}}/10, "{{ review.comment }}" <br>
+                {% endfor %} 
 
-    <input type="submit" value="Remove">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-</form>
+                <p>
 
+                <input type="submit" value="Remove">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

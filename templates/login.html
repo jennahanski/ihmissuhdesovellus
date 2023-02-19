@@ -1,14 +1,20 @@
-<h2>Log in</h2>
+{% extends "layout.html" %} 
+{% block content %}
 
-<form action="/login" method="post">
-    <br><input type="text" name="username" placeholder="username">
-    <p>
-    <br><input type="password" name="password" placeholder="password">
-    <p>
-    <input type="submit" value="Log in">
-</form>
-
-Create a new username <a href="/register">here.</a>
-
-<p>
-<a href="/">Return</a>
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <h2>Log in</h2>
+            <form action="/login" method="post">
+                <br><input type="text" name="username" placeholder="username">
+                <p>
+                <br><input type="password" name="password" placeholder="password">
+                <p>
+                <input type="submit" value="Log in">
+            </form>
+            <br>
+            Create a new username <a href="/register">here.</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

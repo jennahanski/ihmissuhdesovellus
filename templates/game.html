@@ -1,91 +1,105 @@
 {% extends "layout.html" %}
 {% block content %}
 
-{% if session.user_id %}
-{% if not favorite %}
-<form action="/game/{{ id }}" method="POST">
-    <label for="submit">
-    Add to favorites:
-    </label>
-    <button type="submit">Add</button>
-    <input type="hidden" name="fav" value="1">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-</form>
-{% else %}
-<form action="/game/{{ id }}" method="POST">
-    <label for="submit">
-    Remove from favorites:
-    </label>
-    <button type="submit">Remove</button>
-    <input type="hidden" name="fav" value="0">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-{% endif %}
-{% endif %} 
-
-<h1>{{ name }}</h1>
-
-<u1>
-    <li> Added by: {{ creator }}
-    <li> Release year: {{ year }}
-</u1>
-
-{% if reviews %} 
-<h4>Score: {{ avg }} / 10</h4>
-<h2>Reviews</h2>
-{% endif %} 
-
-<u1>
-    {% for entry in reviews %}
-    <li> {{ entry[0] }} {{ entry[2] }}/10: "{{ entry[1] }}" 
-    {% endfor %}
-</u1>
-<p>
-
-{% if session.user_id %} 
-<h3>{{ message }}</h3>
-<form action="/review" method="POST">
-    Rating:
-    <select name="grade">
-        <option value="1">1
-        <option value="2">2
-        <option value="3">3
-        <option value="4">4
-        <option value="5">5
-        <option value="6">6
-        <option value="7">7
-        <option value="8">8
-        <option value="9">9
-        <option value="10">10
-    </select>
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <h1>{{ name }}</h1>
+            <u1>
+                <li> Added by: {{ creator }}
+                <li> Release year: {{ year }}
+            </u1>
+            <p>
+            {% if reviews %} 
+            <h2>Reviews</h2> 
+            <u1>
+                {% for entry in reviews %}
+                <li> {{ entry[0] }} {{ entry[2] }}/10: "{{ entry[1] }}" 
+                {% endfor %}
+            </u1>
+        </div>
+        <p>
+        <div class="col-4">
+            <h4>Score: {{ avg }} / 10</h4>
+            {% endif %}
+            {% if session.user_id %}
+            {% if not favorite %}
+            <form action="/game/{{ id }}" method="POST">
+                <label for="submit">
+                Add to favorites:
+                </label>
+                <button type="submit">Add</button>
+                <input type="hidden" name="fav" value="1">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            </form>
+            {% else %}
+            <form action="/game/{{ id }}" method="POST">
+                <label for="submit">
+                Remove from favorites:
+                </label>
+                <button type="submit">Remove</button>
+                <input type="hidden" name="fav" value="0">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            </form>
+            {% endif %}
+            {% endif %} 
+        </div>
+    </div>
     <p>
-    Comment:<br>
-    <textarea name="comment" rows="4" cols="40" maxlength="1000"></textarea>
-    <p><input type="submit" value="Send">
-    <input type="hidden" name="game_id" value="{{ id }}">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-</form>
-
+    <hr>
+    <div class="row">
+        <div class="col">
+            {% if session.user_id %} 
+            <h3>{{ message }}</h3>
+            <form action="/review" method="POST">
+                Rating:
+                <select name="grade">
+                    <option value="1">1
+                    <option value="2">2
+                    <option value="3">3
+                    <option value="4">4
+                    <option value="5">5
+                    <option value="6">6
+                    <option value="7">7
+                    <option value="8">8
+                    <option value="9">9
+                    <option value="10">10
+                </select>
+                <p>
+                Comment:<br>
+                <textarea name="comment" rows="4" cols="30" maxlength="1000"></textarea>
+                <p><input type="submit" value="Send">
+                <input type="hidden" name="game_id" value="{{ id }}">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            </form>
+        </div>
+        <div class="col">
+            <br>
+            Add the game to your list:
+            <form action="/game/{{ id }}" method="POST">
+                <select name="list">
+                    <option value="0">To Play
+                    <option value="1">Played games
+                </select>
+                <input type="submit" value="Send">
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            </form>
+            {% endif %} 
+        </div>
+        <div class="col">
+            <form action="/{{ id }}/add_tag">
+                <input type="submit" value="Add tags">
+            </form>
+            <br>
+            {% if tags %}
+            tags
+            {% endif %}
+            <p>
+            {% for tag in tags %} 
+                {{ tag[0] }}  ({{ tag[1] }}) 
+            {% endfor %}
+        </div>
+    </div>
+</div>
 <p>
-<form action="/{{ id }}/add_tag">
-    <input type="submit" value="Add tags">
-</form>
-
-<p>Add the game to your list:</p>
-<form action="/game/{{ id }}" method="POST">
-    <select name="list">
-        <option value="0">To Play
-        <option value="1">Played games
-    </select>
-    <input type="submit" value="Send">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-</form>
-{% endif %} 
-<p>
-{% if tags %}
-tags
-{% endif %}
-<p>
-{% for tag in tags %} 
-    {{ tag[0] }}  ({{ tag[1] }}) 
-{% endfor %}
 {% endblock %}

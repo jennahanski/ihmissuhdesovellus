@@ -1,15 +1,21 @@
 {% extends "layout.html" %} 
 {% block content %}
-
-{% if session.user_id %}
-<a href="/add">Add</a> a new game to the library
-{% endif %}
-
-<h3>Game Library:</h3>
-<u1>
-    {% for game in games %} 
-    <li><a href="/game/{{ game.id }}">{{ game.name }}</a>
-    {% endfor %}
-</u1>
-
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            Welcome! With this app you can keep track of your favorite games as well as the interesting new
+            games you've wished to play for ages!
+            <p>
+            <h3>Game Library:</h3>
+            <u1>
+                {% for game in games %} 
+                <li><a href="/game/{{ game.id }}">{{ game.name }}</a>
+                {% endfor %}
+            </u1>
+        </div>
+        <div class="col-4">
+            TOP 5 PELIT?? 
+        </div>
+    </div>
+</div>
 {% endblock %}
