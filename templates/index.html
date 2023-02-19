@@ -14,7 +14,11 @@
             </u1>
         </div>
         <div class="col-4">
-            TOP 5 PELIT?? 
+            {% if session.user_id %}
+            Add a game to the library:
+            <form action="/add">
+                <input type="submit" value="Add">
+            {% endif %}
         </div>
     </div>
 </div>
