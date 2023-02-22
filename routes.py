@@ -15,7 +15,12 @@ def userpage(username):
     lists = games.get_my_lists(user_id)
     playtime = games.get_playtime(user_id)[0]
 
-    return render_template("userpage.html", name=username, reviews=reviews, lists=lists, id=user_id, playtime=playtime)
+    return render_template("userpage.html", 
+                            name = username, 
+                            reviews = reviews, 
+                            lists = lists, 
+                            id = user_id, 
+                            playtime = playtime)
 
 @app.route("/result", methods=["GET"])
 def result():
@@ -39,7 +44,16 @@ def show_game(game_id):
         else:
             message = "Add a review"
 
-        return render_template("game.html", id=game_id, name=info[0], creator=info[1], year=info[2], reviews=reviews, avg=average, message=message, favorite=favorite, tags=tags)
+        return render_template("game.html", 
+                                id = game_id, 
+                                name = info[0], 
+                                creator = info[1], 
+                                year = info[2], 
+                                reviews = reviews, 
+                                avg = average, 
+                                message = message, 
+                                favorite = favorite, 
+                                tags = tags)
     
     if request.method == "POST":
         users.check_csrf()
