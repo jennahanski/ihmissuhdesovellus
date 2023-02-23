@@ -1,0 +1,28 @@
+{% extends "layout.html" %} 
+{% block content %}
+
+{% if session.is_admin %}
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <form action="/game/{{ id }}/edit" method="POST">
+                <label for="submit">
+                Edit the name or year of the game:
+                </label>
+                <p>name:</p>
+                <input type="text" name="name">
+                <p>year:</p>
+                <input type="text" name="year">
+                <button type="submit">Edit</button>
+                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+
+                <br>
+                "{{ info[0] }}, {{ info[2] }}"
+        </div>
+    </div>
+</div>
+{% else %} 
+<p>You must have admin rights to access this page.</p>
+<a href="/">Return</a>
+{% endif %}
+{% endblock %}

@@ -1,11 +1,11 @@
 from db import db
 
 def get_all_games():
-    sql = "SELECT id, name FROM games ORDER BY name"
+    sql = "SELECT id, name FROM games WHERE visible=True ORDER BY name"
     return db.session.execute(sql).fetchall()
 
 def search_game(query):
-    sql = "SELECT id, name FROM games WHERE lower(name) LIKE :query"
+    sql = "SELECT id, name FROM games WHERE visible=True AND lower(name) LIKE :query"
     result = db.session.execute(sql, {"query":"%"+query+"%"})
     return result.fetchall()
 
@@ -15,6 +15,16 @@ def add_game(name, year, creator_id):
     game_id = result.fetchone()[0]
     db.session.commit()
     return game_id
+
+def edit_game(name, year, game_id):
+    sql = "UPDATE games SET name=:name, year=:year WHERE id=:game_id"
+    db.session.execute(sql, {"name":name, "year":year, "game_id":game_id})
+    db.session.commit()
+
+def delete_game(game_id):
+    sql = "UPDATE games SET visible=False WHERE id=:game_id"
+    db.session.execute(sql, {"game_id":game_id})
+    db.session.commit()
 
 def get_game_info(game_id):
     sql = "SELECT G.name, U.username, G.year FROM games G, users U WHERE G.id=:game_id AND G.creator_id=U.id"
@@ -37,11 +47,11 @@ def check_for_list(user_id, game_id):
         return False
 
 def get_my_lists(user_id):
-    sql = "SELECT S.game_id, G.name, S.status, S.playtime, S.platform, S.favorite FROM stats S, games G WHERE S.user_id=:user_id AND S.game_id=G.id ORDER BY S.id"
+    sql = "SELECT S.game_id, G.name, S.status, S.playtime, S.platform, S.favorite FROM stats S, games G WHERE S.user_id=:user_id AND S.game_id=G.id AND G.visible=True ORDER BY S.id"
     return db.session.execute(sql, {"user_id":user_id}).fetchall()
 
 def get_playtime(user_id):
-    sql = "SELECT SUM(S.playtime) FROM stats S WHERE S.user_id=:user_id"
+    sql = "SELECT SUM(S.playtime) FROM stats S, games G WHERE S.user_id=:user_id AND G.id=S.game_id AND G.visible=True"
     return db.session.execute(sql, {"user_id":user_id}).fetchone()
 
 def add_to_favorites(game_id, user_id, favorite):
@@ -57,22 +67,22 @@ def is_favorite(user_id, game_id):
     return db.session.execute(sql, {"user_id":user_id, "game_id":game_id}).fetchone()
 
 def get_reviews(game_id):
-    sql = "SELECT U.username, R.comment, R.grade FROM reviews R, users U WHERE R.user_id=U.id AND R.game_id=:game_id AND visible=1 ORDER BY U.username"
+    sql = "SELECT U.username, R.comment, R.grade, R.id FROM reviews R, users U WHERE R.user_id=U.id AND R.game_id=:game_id AND R.visible=1 ORDER BY U.username"
     return db.session.execute(sql, {"game_id":game_id}).fetchall()
 
 def get_average(game_id):
     try:
-        sql = "SELECT SUM(R.grade)::float/COUNT(R.grade) FROM reviews R WHERE R.game_id=:game_id AND visible=1"
+        sql = "SELECT SUM(R.grade)::float/COUNT(R.grade) FROM reviews R WHERE R.game_id=:game_id AND R.visible=1"
         return db.session.execute(sql, {"game_id":game_id}).fetchone()[0]
     except:
         return 0
 
 def get_my_reviews(user_id):
-    sql = "SELECT R.id, R.comment, R.grade, G.name, R.game_id FROM reviews R, games G WHERE R.user_id=:user_id AND R.game_id=G.id AND visible=1 ORDER BY R.id"
+    sql = "SELECT R.id, R.comment, R.grade, G.name, R.game_id FROM reviews R, games G WHERE R.user_id=:user_id AND R.game_id=G.id AND R.visible=1 AND G.visible=True ORDER BY R.id"
     return db.session.execute(sql, {"user_id":user_id}).fetchall()
 
 def check_for_review(user_id, game_id):
-    sql = "SELECT R.id FROM reviews R, users U WHERE R.user_id=:user_id AND R.game_id=:game_id"
+    sql = "SELECT R.id FROM reviews R, users U WHERE R.user_id=:user_id AND R.game_id=:game_id AND visible=1"
     return db.session.execute(sql, {"user_id":user_id, "game_id":game_id}).fetchone()
 
 def add_review(game_id, user_id, comment, grade):

@@ -2,14 +2,15 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username TEXT UNIQUE,
     password TEXT,
-    is_admin INTEGER
+    is_admin BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE games (
     id SERIAL PRIMARY KEY,
     creator_id INTEGER REFERENCES users,
     name TEXT,
-    year INTEGER
+    year INTEGER,
+    visible BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE stats (

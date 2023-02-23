@@ -68,6 +68,43 @@ def show_game(game_id):
 
             return render_template("addtolist.html", id=game_id, status=status)
 
+@app.route("/game/<int:game_id>/edit", methods=["GET", "POST"])
+def admin_edit(game_id):
+    info = games.get_game_info(game_id)
+    if request.method == "GET":
+        return render_template("admin_edit.html", id=game_id, info=info)
+
+    if request.method == "POST":
+        users.check_csrf()
+        name = request.form["name"]
+        year = request.form["year"]
+        if name == "":
+            name = info[0]
+        if year == "":
+            year = info[2]
+        
+        games.edit_game(name, year, game_id)
+        return redirect("/game/"+str(game_id))
+
+
+@app.route("/game/<int:game_id>/delete", methods=["GET", "POST"])
+def admin_delete(game_id):
+    if request.method == "GET":
+        reviews = games.get_reviews(game_id)
+        return render_template("admin_delete.html", id=game_id, content=reviews)
+
+    if request.method == "POST":
+        users.check_csrf()
+        if "visible" in request.form:
+            if request.form["visible"] == "f":
+                games.delete_game(game_id)
+                return redirect("/")
+        elif "review" in request.form:
+            choices = request.form.getlist("review")
+            for review in choices:
+                games.remove_review(review, users.user_id())
+            return redirect("/game/"+str(game_id))
+
 @app.route("/review", methods=["POST"])
 def review():
     users.check_csrf()
@@ -76,11 +113,13 @@ def review():
     grade = int(request.form["grade"])
 
     if grade < 1 or grade > 10:
-        return render_template("error.html", message="The grade must be between 1 and 10")
+        return render_template("error.html", message="The grade must be between 1 and 10",
+                                            page="review")
 
     comment = request.form["comment"]
     if len(comment) > 1000:
-        return render_template("error.html", message="Comment is too long")
+        return render_template("error.html", message="Comment is too long",
+                                            page="review")
 
     if len(comment) == 0:
         comment = "-"
@@ -112,7 +151,8 @@ def add_tags(game_id):
 
         exists = games.check_tag(tag, user_id, game_id)
         if exists:
-            return render_template("error.html", message="Tag already exists.")
+            return render_template("error.html", message="Tag already exists.",
+                                                page="<int:game_id>/add_tag")
     
         games.add_tags(user_id, game_id, tag)
 
@@ -130,10 +170,12 @@ def add_game():
         name = request.form["name"]
         year = request.form["year"]
         if len(name) < 1 or len(name) > 40:
-            return render_template("error.html", message="Length of the name must be between 1 and 40 characters")
-        
+            return render_template("error.html", message="Length of the name must be between 1 and 40 characters",
+                                                page="add")
+
         if len(year) != 4:
-            return render_template("error.html", message="Incorrect year")
+            return render_template("error.html", message="Incorrect year",
+                                                page="add")
         
         game_id = games.add_game(name, year, users.user_id())
         return redirect("/game/"+str(game_id))
@@ -150,6 +192,7 @@ def add_to_list(game_id, status):
 
 @app.route("/remove", methods=["GET", "POST"])
 def remove_review():
+    username = users.username()
     if request.method == "GET":
         my_reviews = games.get_my_reviews(users.user_id())
         return render_template("remove.html", content=my_reviews)
@@ -157,11 +200,11 @@ def remove_review():
     if request.method == "POST":
         users.check_csrf()
         if "review" in request.form:
-            choices = request.form.getlist["review"]
+            choices = request.form.getlist("review")
             for review in choices:
                 games.remove_review(review, users.user_id())
 
-    return redirect("/")
+    return redirect("/user/"+username)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -171,18 +214,22 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         if len(username) < 2 or len(username) > 20:
-            return render_template("error.html", message="Username must be between 2 and 20 characters")
+            return render_template("error.html", message="Username must be between 2 and 20 characters",
+                                                page="register")
         
         password1 = request.form["password1"]
         password2 = request.form["password2"]
         if password1 != password2:
-            return render_template("error.html", message="The passwords don't match")
+            return render_template("error.html", message="The passwords don't match",
+                                                page="register")
         if password1 == "":
-            return render_template("error.html", message="Password can't be empty")
+            return render_template("error.html", message="Password can't be empty",
+                                                page="register")
     
     if not users.register(username, password1):
-        return render_template("error.html", message="Registration failed")
-    return redirect("/")
+        return render_template("error.html", message="Registration failed",
+                                            page="register")
+    return redirect("/login")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -193,7 +240,8 @@ def login():
         password = request.form["password"]
 
     if not users.login(username, password):
-        return render_template("error.html", message="Incorrect username or password")
+        return render_template("error.html", message="Incorrect username or password",
+                                            page="login")
     return redirect("/")
 
 @app.route("/logout")

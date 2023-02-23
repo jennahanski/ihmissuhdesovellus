@@ -1,4 +1,11 @@
 {% extends "layout.html" %}
+{% block adminbar %} 
+<li class="nav-item">
+    <a class="nav-link" href="/game/{{ id }}/edit">Edit</a>
+<li class="nav-item">
+    <a class="nav-link" href="/game/{{ id }}/delete">Delete</a>
+{% endblock %}
+
 {% block content %}
 
 <div class="container">
@@ -74,7 +81,6 @@
             </form>
         </div>
         <div class="col">
-            <br>
             Add the game to your list:
             <form action="/game/{{ id }}" method="POST">
                 <select name="list">

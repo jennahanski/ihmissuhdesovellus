@@ -12,6 +12,9 @@
                     <a class="nav-link" href="/user/{{ session.user_name }}">{{ session.user_name }}</a>
                 <li class="nav-item">
                     <a class="nav-link" href="/logout">Log out</a>
+                {% if session.is_admin %} 
+                    {% block adminbar %} {% endblock %} 
+                {% endif %}
                 {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="/login">Log in</a>
