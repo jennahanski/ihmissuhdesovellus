@@ -3,6 +3,9 @@ from db import db
 from flask import render_template, redirect, request
 import users
 import games
+import stats
+import reviews
+import tags
 
 @app.route("/")
 def index():
@@ -11,13 +14,13 @@ def index():
 @app.route("/user/<username>")
 def userpage(username):
     user_id = users.get_user_id(username)
-    reviews = games.get_my_reviews(user_id)
-    lists = games.get_my_lists(user_id)
-    playtime = games.get_playtime(user_id)[0]
+    my_reviews = reviews.get_my_reviews(user_id)
+    lists = stats.get_my_lists(user_id)
+    playtime = stats.get_playtime(user_id)[0]
 
     return render_template("userpage.html", 
                             name = username, 
-                            reviews = reviews, 
+                            reviews = my_reviews, 
                             lists = lists, 
                             id = user_id, 
                             playtime = playtime)
@@ -31,14 +34,14 @@ def result():
 @app.route("/game/<int:game_id>", methods=["GET", "POST"])
 def show_game(game_id):
     user_id = users.user_id()
-    favorite = games.is_favorite(user_id, game_id)
+    favorite = stats.is_favorite(user_id, game_id)
 
     if request.method == "GET":
         info = games.get_game_info(game_id)
-        reviews = games.get_reviews(game_id)
-        average = games.get_average(game_id)
-        tags = games.get_all_tags(game_id)
-        check = games.check_for_review(user_id, game_id)
+        game_reviews = reviews.get_reviews(game_id)
+        average = reviews.get_average(game_id)
+        game_tags = tags.get_all_tags(game_id)
+        check = reviews.check_for_review(user_id, game_id)
         if check:
             message = "Edit your review"
         else:
@@ -49,22 +52,22 @@ def show_game(game_id):
                                 name = info[0], 
                                 creator = info[1], 
                                 year = info[2], 
-                                reviews = reviews, 
+                                reviews = game_reviews, 
                                 avg = average, 
                                 message = message, 
                                 favorite = favorite, 
-                                tags = tags)
+                                tags = game_tags)
     
     if request.method == "POST":
         users.check_csrf()
         if "fav" in request.form:
             favorite = request.form["fav"]
-            games.add_to_favorites(game_id, user_id, favorite)
+            stats.add_to_favorites(game_id, user_id, favorite)
             return redirect("/game/"+str(game_id))
         else:
             status = request.form["list"]
             if status == "0":
-                games.add_to_list(game_id, user_id, status, 0, "")
+                stats.add_to_list(game_id, user_id, status, 0, "")
 
             return render_template("addtolist.html", id=game_id, status=status)
 
@@ -90,8 +93,8 @@ def admin_edit(game_id):
 @app.route("/game/<int:game_id>/delete", methods=["GET", "POST"])
 def admin_delete(game_id):
     if request.method == "GET":
-        reviews = games.get_reviews(game_id)
-        return render_template("admin_delete.html", id=game_id, content=reviews)
+        content = reviews.get_reviews(game_id)
+        return render_template("admin_delete.html", id=game_id, content=content)
 
     if request.method == "POST":
         users.check_csrf()
@@ -102,7 +105,7 @@ def admin_delete(game_id):
         elif "review" in request.form:
             choices = request.form.getlist("review")
             for review in choices:
-                games.remove_review(review, users.user_id())
+                reviews.remove_review(review, users.user_id())
             return redirect("/game/"+str(game_id))
 
 @app.route("/review", methods=["POST"])
@@ -124,11 +127,11 @@ def review():
     if len(comment) == 0:
         comment = "-"
 
-    check = games.check_for_review(users.user_id(), game_id)
+    check = reviews.check_for_review(users.user_id(), game_id)
     if check:
-        games.edit_review(check[0], comment, grade)
+        reviews.edit_review(check[0], comment, grade)
     else:
-        games.add_review(game_id, users.user_id(), comment, grade)
+        reviews.add_review(game_id, users.user_id(), comment, grade)
 
     return redirect("/game/"+str(game_id))
 
@@ -137,7 +140,7 @@ def add_tags(game_id):
     user_id = users.user_id()
 
     if request.method == "GET":
-        my_tags = games.get_my_tags(game_id, user_id)
+        my_tags = tags.get_my_tags(game_id, user_id)
         name = games.get_game_info(game_id)[0]
         return render_template("tags.html", id=game_id, tags=my_tags, name=name)
 
@@ -149,12 +152,12 @@ def add_tags(game_id):
         users.check_csrf()
         tag = request.form["tag"]
 
-        exists = games.check_tag(tag, user_id, game_id)
+        exists = tags.check_tag(tag, user_id, game_id)
         if exists:
             return render_template("error.html", message="Tag already exists.",
                                                 page="<int:game_id>/add_tag")
     
-        games.add_tags(user_id, game_id, tag)
+        tags.add_tags(user_id, game_id, tag)
 
         return redirect("/"+str(game_id)+"/add_tag")
 
@@ -187,14 +190,14 @@ def add_to_list(game_id, status):
     playtime = int(request.form["playtime"])
     platform = request.form["platform"]
 
-    games.add_to_list(game_id, user_id, status, playtime, platform)
+    stats.add_to_list(game_id, user_id, status, playtime, platform)
     return redirect("/game/"+str(game_id))
 
 @app.route("/remove", methods=["GET", "POST"])
 def remove_review():
     username = users.username()
     if request.method == "GET":
-        my_reviews = games.get_my_reviews(users.user_id())
+        my_reviews = reviews.get_my_reviews(users.user_id())
         return render_template("remove.html", content=my_reviews)
 
     if request.method == "POST":
@@ -202,7 +205,7 @@ def remove_review():
         if "review" in request.form:
             choices = request.form.getlist("review")
             for review in choices:
-                games.remove_review(review, users.user_id())
+                reviews.remove_review(review, users.user_id())
 
     return redirect("/user/"+username)
 
