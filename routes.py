@@ -102,11 +102,16 @@ def admin_delete(game_id):
             if request.form["visible"] == "f":
                 games.delete_game(game_id)
                 return redirect("/")
-        elif "review" in request.form:
-            choices = request.form.getlist("review")
-            for review in choices:
-                reviews.remove_review(review, users.user_id())
-            return redirect("/game/"+str(game_id))
+
+@app.route("/game/<int:game_id>/delete_review", methods=["POST"])
+def admin_delete_review(game_id):
+    users.check_csrf()
+    if "review" in request.form:
+        choices = request.form.getlist("review")
+        user_ids = request.form.getlist("user_id")
+        for (review, id) in zip(choices, user_ids):
+            reviews.remove_review(review, id)
+        return redirect("/game/"+str(game_id))
 
 @app.route("/review", methods=["POST"])
 def review():

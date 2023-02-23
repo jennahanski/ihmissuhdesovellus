@@ -1,7 +1,7 @@
 from db import db
 
 def get_reviews(game_id):
-    sql = "SELECT U.username, R.comment, R.grade, R.id FROM reviews R, users U WHERE R.user_id=U.id AND R.game_id=:game_id AND R.visible=1 ORDER BY U.username"
+    sql = "SELECT U.username, R.comment, R.grade, R.id, R.user_id FROM reviews R, users U WHERE R.user_id=U.id AND R.game_id=:game_id AND R.visible=1 ORDER BY U.username"
     return db.session.execute(sql, {"game_id":game_id}).fetchall()
 
 def get_average(game_id):

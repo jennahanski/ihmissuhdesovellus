@@ -15,13 +15,14 @@
             </form>
         </div>
         <div class="col">
-            <form action="/game/{{ id }}/delete" method="POST">
+            <form action="/game/{{ id }}/delete_review" method="POST">
                 <label for="submit">
                     <h3>Remove a review</h3>
                 </label>
                 <p>Select a review to remove:<br>
                 {% for review in content %} 
-                <input type="checkbox" name="review" value="{{ review[3] }}" multiple="multiple"> {{ review.grade}}/10: "{{ review.comment }}" <br>
+                <input type="checkbox" name="review" value="{{ review[3] }}" multiple="multiple"> {{ review.grade}}/10: "{{ review.comment }}"<br>
+                <input type="hidden" name="user_id" value="{{ review[4] }}">
                 {% endfor %} 
                 <p>
                 <input type="submit" value="Remove">
