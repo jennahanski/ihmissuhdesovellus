@@ -1,17 +1,21 @@
 {% extends "layout.html" %} 
 {% block content %}
 
-<h2>Create a new username</h2>
-
-<form action="/register" method="post">
-    <br><input type="text" name="username" placeholder="Username" minlength="2" maxlength="20">
-    <p>
-    <br><input type="password" name="password1" placeholder="Password">
-    <p>
-    <br><input type="password" name="password2" placeholder="Confirm your password">
-    <p><input type="submit" value="Register">
-</form>
-<p>
-<a href="/login">Return</a>
-
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <h2>Create a new username</h2>
+            <form class="my-2 my-lg-0 ml-auto" action="/register" method="post">
+                <br><input type="text" name="username" placeholder="Username" minlength="2" maxlength="20">
+                <p>
+                <br><input type="password" name="password1" placeholder="Password">
+                <p>
+                <br><input type="password" name="password2" placeholder="Confirm your password">
+                <p><input type="submit" value="Register">
+            </form>
+            <p>
+            <a href="/login">Return</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

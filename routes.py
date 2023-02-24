@@ -9,7 +9,9 @@ import tags
 
 @app.route("/")
 def index():
-    return render_template("index.html", games=games.get_all_games()) 
+    new_reviews=reviews.get_new_reviews()
+    return render_template("index.html", games=games.get_all_games(),
+                                        reviews=new_reviews) 
 
 @app.route("/user/<username>")
 def userpage(username):

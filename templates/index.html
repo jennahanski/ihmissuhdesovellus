@@ -3,8 +3,17 @@
 <div class="container">
     <div class="row">
         <div class="col-8">
+            <p>
             Welcome! With this app you can keep track of your favorite games as well as the interesting new
             games you've wished to play for ages!
+            </p>
+            <br>
+            {% if session.user_id %}
+                Add a game to the library:
+                <form action="/add">
+                    <input type="submit" value="Add">
+                </form>
+            {% endif %}
             <p>
             <h3>Game Library:</h3>
             <u1>
@@ -14,11 +23,10 @@
             </u1>
         </div>
         <div class="col-4">
-            {% if session.user_id %}
-            Add a game to the library:
-            <form action="/add">
-                <input type="submit" value="Add">
-            {% endif %}
+            <p>Newest reviews:</p>
+            {% for review in reviews %} 
+                <li><a href="/game/{{ review[3] }}">{{ review[1] }}: {{ review[2] }}/10, {{ review[4] }}</a></li>
+            {% endfor %}
         </div>
     </div>
 </div>
