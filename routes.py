@@ -9,9 +9,12 @@ import tags
 
 @app.route("/")
 def index():
-    new_reviews=reviews.get_new_reviews()
-    return render_template("index.html", games=games.get_all_games(),
-                                        reviews=new_reviews) 
+    return render_template("index.html",reviews=reviews.get_new_reviews(),
+                                        best=reviews.get_best_games()) 
+
+@app.route("/gamelibrary")
+def library():
+    return render_template("gamelibrary.html", games=games.get_all_games())
 
 @app.route("/user/<username>")
 def userpage(username):
@@ -41,7 +44,8 @@ def show_game(game_id):
     if request.method == "GET":
         info = games.get_game_info(game_id)
         game_reviews = reviews.get_reviews(game_id)
-        average = reviews.get_average(game_id)
+        if game_reviews:
+            average = reviews.get_average(game_id)
         game_tags = tags.get_all_tags(game_id)
         check = reviews.check_for_review(user_id, game_id)
         if check:

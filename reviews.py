@@ -5,14 +5,14 @@ def get_reviews(game_id):
     return db.session.execute(sql, {"game_id":game_id}).fetchall()
 
 def get_average(game_id):
-    try:
-        sql = "SELECT SUM(R.grade)::float/COUNT(R.grade) FROM reviews R WHERE R.game_id=:game_id AND R.visible=1"
-        return db.session.execute(sql, {"game_id":game_id}).fetchone()[0]
-    except:
-        return 0
+    
+    sql = "SELECT ROUND((SUM(R.grade)::float/COUNT(R.grade))::numeric, 2) FROM reviews R WHERE R.game_id=:game_id AND R.visible=1"
+    return db.session.execute(sql, {"game_id":game_id}).fetchone()[0]
 
 def get_best_games():
-    sql = "SELECT G.id, G.name, (SELECT SUM(grade)::float/COUNT(grade) FROM reviews WHERE game_id=R.game_id AND visible=1) FROM games G, reviews R WHERE G.id=R.game_id AND G.visible=True ORDER BY G.id LIMIT 10"
+    sql = "SELECT DISTINCT G.id, G.name, (SELECT ROUND((SUM(A.grade)::float/COUNT(A.grade))::numeric, 2) FROM reviews A WHERE A.game_id=G.id AND A.visible=1) as avg \
+        FROM reviews R, games G WHERE R.game_id=G.id AND G.visible=True ORDER BY avg DESC LIMIT 10"
+    return db.session.execute(sql).fetchall()
 
 def get_my_reviews(user_id):
     sql = "SELECT R.id, R.comment, R.grade, G.name, R.game_id FROM reviews R, games G WHERE R.user_id=:user_id AND R.game_id=G.id AND R.visible=1 AND G.visible=True ORDER BY R.id"

@@ -7,6 +7,8 @@
         <nav class="navbar navbar-expand-sm navbar-light">
             <a class="navbar-brand" href="/">Video Game List</a>
             <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/gamelibrary">Games</a>
                 {% if session.user_id %}
                 <li class="nav-item">
                     <a class="nav-link" href="/user/{{ session.user_name }}">{{ session.user_name }}</a>

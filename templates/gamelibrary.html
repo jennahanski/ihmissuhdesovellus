@@ -1,0 +1,22 @@
+{% extends "layout.html" %} 
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            {% if session.user_id %}
+                Add a game to the library:
+                <form action="/add">
+                    <input type="submit" value="Add">
+                </form>
+            {% endif %}
+            <p>
+            <h3>Game library:</h3>
+            <u1>
+                {% for game in games %} 
+                <li><a href="/game/{{ game.id }}">{{ game.name }}</a>
+                {% endfor %}
+            </u1>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -8,24 +8,19 @@
             games you've wished to play for ages!
             </p>
             <br>
-            {% if session.user_id %}
-                Add a game to the library:
-                <form action="/add">
-                    <input type="submit" value="Add">
-                </form>
-            {% endif %}
+            <a href="/gamelibrary"><h3>Game library</h3></a>
             <p>
-            <h3>Game Library:</h3>
+            <h3>10 Top rated games:</h3>
             <u1>
-                {% for game in games %} 
-                <li><a href="/game/{{ game.id }}">{{ game.name }}</a>
+                {% for game in best %} 
+                <li><a href="/game/{{ game.id }}">{{ game.name }}</a>: {{ game.avg }}
                 {% endfor %}
             </u1>
         </div>
         <div class="col-4">
             <p>Newest reviews:</p>
             {% for review in reviews %} 
-                <li><a href="/game/{{ review[3] }}">{{ review[1] }}: {{ review[2] }}/10, {{ review[4] }}</a></li>
+                <li><a href="/game/{{ review[3] }}">{{ review[1] }}: {{ review[2] }}/10, "{{ review[4] }}"</a></li>
             {% endfor %}
         </div>
     </div>
