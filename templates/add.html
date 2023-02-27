@@ -1,25 +1,23 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col-8">
-            {% if session.user_id %}
-            <h1>Add new game</h1>
-
-            <form action="/add" method="POST">
-                <p>Name:<br>
-                <input type="text" name="name" minlenght="1" maxlength="40">
-                Year:
-                <input type="text" name="year">
-                <input type="submit" value="Submit">
-                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-            </form>
-            {% else %} 
-            You must be logged in to add a game. 
-            <a href="/login">Log in</a> or
-            <a href="/register">Register</a>
-            {% endif %}
-        </div>
-    </div>
+    {% if session.user_id %}
+    <h1>Add new game</h1>
+    <br>
+    <form action="/add" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" minlenght="1" maxlength="40">
+        <label for="year">Year:</label>
+        <input type="text" id="year" name="year">
+        <br>
+        <br>
+        <input class="btn btn-frontpage btn-s" type="submit" value="Submit">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    </form>
+    {% else %} 
+    You must be logged in to add a game. 
+    <a href="/login">Log in</a> or
+    <a href="/register">Register</a>
+    {% endif %}
 </div>
 {% endblock %}

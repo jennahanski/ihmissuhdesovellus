@@ -2,20 +2,16 @@
 {% block content %}
 
 <div class="container">
-    <div class="row">
-        <div class="col-8">
-            {% if results %} 
-            <h2>Results:</h2>
-            {% else %}
-            The game you searched wasn't found. You can add it to the library <a href="/add">here</a>.
-            {% endif %} 
+    {% if results %} 
+    <h2>Results for search "{{ query }}":</h2>
+    <br>
+    {% else %}
+    The game you searched wasn't found. You can add it to the library <a href="/add">here</a>.
+    {% endif %} 
 
-            <u1>
-                {% for game in results %} 
-                <li><a href="/game/{{ game[0] }}">{{ game[1] }}</a>
-                {% endfor %}
-            </u1>
-        </div>
-    </div>
+    {% for game in results %} 
+    <a href="/game/{{ game[0] }}">{{ game[1] }}</a>
+    <hr class="container-library">
+    {% endfor %}
 </div>
 {% endblock %}

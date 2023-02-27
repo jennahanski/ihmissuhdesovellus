@@ -34,7 +34,8 @@ def userpage(username):
 def result():
     query = request.args["query"]
 
-    return render_template("result.html", results=games.search_game(query))
+    return render_template("result.html", results=games.search_game(query),
+                                          query=query)
 
 @app.route("/game/<int:game_id>", methods=["GET", "POST"])
 def show_game(game_id):

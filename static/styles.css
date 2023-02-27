@@ -1,0 +1,128 @@
+.f-container {
+    width: 70%;
+    margin: auto;
+    overflow: hidden;
+    text-align: center;
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+}
+
+.f-body {
+    padding-top: 3.5rem;
+    background-color: #e53935;
+}
+
+.library {
+    max-width: 950px;
+}
+
+body {
+    background-color:   #ebb2a1; 
+    padding-top: 3.5rem;
+}
+
+.row {
+    text-align: center;
+}
+
+.d-block {
+    font-size: 15px;
+}
+
+.col-left {
+    padding-inline: 5% 25%;
+}
+
+.frontpage {
+    background-color:  #e53935;
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+    
+}
+
+.navbar-custom {
+    background-color: #292725;
+}
+
+.navbar-custom .navbar-brand {
+    font-family: "Formular";
+    color:#d35400;
+    font-weight: bold;
+}
+
+.navbar-custom .nav-link {
+    color: #faefea;
+}
+
+.review-main {
+    font-size: 20px;
+}
+
+.review-header {
+    background-color: #d35400;
+}
+
+.btn-search {
+    background-color: #413c3b;
+    color: rgb(177, 142, 142);
+}
+
+.btn-search:hover,
+.btn-frontpage:hover {
+    background-color: #6e5d59;
+    color: rgb(228, 200, 200);
+}
+
+.btn-frontpage:link,
+.btn-frontpage {
+    background-color: #413c3b;
+    color: rgb(177, 142, 142);
+    padding: 15px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-custom:hover {
+    background-color: #c35057;
+    
+}
+
+.badge-custom {
+    background-color: #6e5d59;
+    color: rgb(228, 200, 200);
+}
+
+.list-group .list-group-item,
+.list-group-link {
+    background-color: #f8f6f3;
+    text-align: center;
+}
+
+a:link {
+    color: #7a7a70;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:visited {
+    color: rgb(177, 142, 142);
+    background-color: transparent;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    color: #c35057;
+    background-color: transparent;
+    text-decoration: underline;
+  }
+  
+  a:active {
+    color: #78492b;
+    background-color: transparent;
+    text-decoration: underline;
+  }
+
+.bottom-github {
+    text-align: center;
+}
