@@ -1,4 +1,4 @@
-.f-container {
+.container {
     width: 70%;
     margin: auto;
     overflow: hidden;
@@ -7,22 +7,39 @@
     padding-bottom: 3.5rem;
 }
 
-.f-body {
+.container-custom {
     padding-top: 3.5rem;
-    background-color: #e53935;
+    background-color: #fffefe;
 }
 
 .library {
     max-width: 950px;
 }
 
+.container h1 {
+    font-weight: bold;
+}
+
+
 body {
-    background-color:   #ebb2a1; 
+    background-color:    #fcefea; 
     padding-top: 3.5rem;
+}
+
+textarea {
+    width:50%;
+    padding: 12px 20px;
+    margin: 12px;
+    box-sizing: content-box;
+    resize: none;
 }
 
 .row {
     text-align: center;
+}
+
+.col-avg {
+    padding-top:20px;
 }
 
 .d-block {
@@ -34,20 +51,21 @@ body {
 }
 
 .frontpage {
-    background-color:  #e53935;
+    background-color: #fa5f30b7;
     padding-top: 2rem;
     padding-bottom: 4rem;
     
 }
 
 .navbar-custom {
-    background-color: #292725;
+    background-color: #29221d;
 }
 
 .navbar-custom .navbar-brand {
     font-family: "Formular";
-    color:#d35400;
+    color:#f7cf1e;
     font-weight: bold;
+    text-align: center;
 }
 
 .navbar-custom .nav-link {
@@ -67,10 +85,36 @@ body {
     color: rgb(177, 142, 142);
 }
 
+.btn-admin,
+.btn-admin:link,
+.btn-admin:hover,
+.btn-admin:visited {
+    color:rgb(226, 39, 39);
+    font-weight: bold;
+}
+
 .btn-search:hover,
 .btn-frontpage:hover {
     background-color: #6e5d59;
     color: rgb(228, 200, 200);
+}
+
+.btn-fav,
+.btn-fav:link,
+.btn-send:hover {
+    background-color: #f7c336;
+    color: rgb(58, 41, 41);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-send,
+.btn-send:link {
+    background-color: #beaa71;
+    color: rgb(58, 41, 41);
+    text-align: center;
+    text-decoration: none;
 }
 
 .btn-frontpage:link,
@@ -91,6 +135,12 @@ body {
 .badge-custom {
     background-color: #6e5d59;
     color: rgb(228, 200, 200);
+}
+
+.badge-tag {
+    background-color: #fa5f30b7;
+    color: rgb(39, 29, 29);
+    padding: 8px 10px;
 }
 
 .list-group .list-group-item,

@@ -1,32 +1,43 @@
 {% extends "layout.html" %}
 {% block adminbar %} 
 <li class="nav-item">
-    <a class="nav-link" href="/game/{{ id }}/edit">Edit</a>
+    <a class="nav-link btn-admin" href="/game/{{ id }}/edit">Edit</a>
 <li class="nav-item">
-    <a class="nav-link" href="/game/{{ id }}/delete">Delete</a>
+    <a class="nav-link btn-admin" href="/game/{{ id }}/delete">Delete</a>
 {% endblock %}
 
 {% block content %}
 
 <div class="container">
+    <div class="row-1">
+        <div class="col">
+            <h1 class="text-center">{{ name }}</h1>
+            <p>Release year: {{ year }}</p>
+            <hr>
+        </div>
+    </div>
     <div class="row">
         <div class="col-8">
-            <h1>{{ name }}</h1>
-            <u1>
-                <li> Added by: {{ creator }}
-                <li> Release year: {{ year }}
-            </u1>
-            <p>
             {% if reviews %} 
             <h2>Reviews</h2> 
-            <u1>
+            <div class="my-3 p-3 bg-white rounded shadow-sm">
                 {% for entry in reviews %}
-                <li> {{ entry[0] }} {{ entry[2] }}/10: "{{ entry[1] }}" 
-                {% endfor %}
-            </u1>
+                    <div class="media text-muted pt-3">
+                        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                            <div class="d-flex justify-content-between align-items-center w-100">
+                                <strong class="review-main">
+                                    <a href="/user/{{ entry[0] }}">{{ entry[0] }}:</a>
+                                </strong>
+                                <p>{{ entry[2] }}/10</p>
+                            </div>
+                            <span class="d-block">"{{ entry[1] }}"</span>
+                        </div>
+                    </div>
+                {% endfor %}     
+            </div> 
         </div>
         <p>
-        <div class="col-4">
+        <div class="col-4 col-avg">
             <h4>Score: {{ avg }} / 10</h4>
             {% endif %}
             {% if session.user_id %}
@@ -35,7 +46,7 @@
                 <label for="submit">
                 Add to favorites:
                 </label>
-                <button type="submit">Add</button>
+                <button class="btn btn-fav" type="submit">Add</button>
                 <input type="hidden" name="fav" value="1">
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             </form>
@@ -44,12 +55,12 @@
                 <label for="submit">
                 Remove from favorites:
                 </label>
-                <button type="submit">Remove</button>
+                <button class="btn btn-fav" type="submit">Remove</button>
                 <input type="hidden" name="fav" value="0">
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             </form>
             {% endif %}
-            {% endif %} 
+            {% endif %}
         </div>
     </div>
     <p>
@@ -60,7 +71,7 @@
             <h3>{{ message }}</h3>
             <form action="/review" method="POST">
                 Rating:
-                <select name="grade">
+                <select class="rev-select" name="grade">
                     <option value="1">1
                     <option value="2">2
                     <option value="3">3
@@ -75,7 +86,7 @@
                 <p>
                 Comment:<br>
                 <textarea name="comment" rows="4" cols="30" maxlength="1000"></textarea>
-                <p><input type="submit" value="Send">
+                <p><input class="btn btn-send" type="submit" value="Send">
                 <input type="hidden" name="game_id" value="{{ id }}">
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             </form>
@@ -87,23 +98,24 @@
                     <option value="0">To Play
                     <option value="1">Played games
                 </select>
-                <input type="submit" value="Send">
+                <input class="btn btn-send" type="submit" value="Send">
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             </form>
             {% endif %} 
         </div>
         <div class="col">
-            <form action="/{{ id }}/add_tag">
-                <input type="submit" value="Add tags">
-            </form>
             <br>
             {% if tags %}
-            tags
+            <b>Tags:</b>
             {% endif %}
             <p>
             {% for tag in tags %} 
-                {{ tag[0] }}  ({{ tag[1] }}) 
+                {{ tag[0] }}  
+                <span class="badge badge-tag badge-pill">{{ tag[1] }}</span>
             {% endfor %}
+            <form action="/{{ id }}/add_tag">
+                <input class="btn btn-send" type="submit" value="Add tags">
+            </form>
         </div>
     </div>
 </div>

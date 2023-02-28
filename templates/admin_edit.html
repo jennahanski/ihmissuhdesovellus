@@ -3,21 +3,21 @@
 
 {% if session.is_admin %}
 <div class="container">
-    <div class="row">
-        <div class="col-6">
+    <div class="row-1">
+        <div class="col">
             <form action="/game/{{ id }}/edit" method="POST">
                 <label for="submit">
-                Edit the name or year of the game:
+                <p>Edit the name or year of the game:
                 </label>
                 <p>name:</p>
                 <input type="text" name="name">
                 <p>year:</p>
                 <input type="text" name="year">
-                <button type="submit">Edit</button>
+                <button class="btn btn-send" type="submit">Edit</button>
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-
+                <p>
                 <br>
-                "{{ info[0] }}, {{ info[2] }}"
+                <p class="text-center" >"{{ info[0] }}, {{ info[2] }}"</p>
         </div>
     </div>
 </div>

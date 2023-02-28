@@ -2,57 +2,79 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-8">
+        <div class="col">
             <a href="/user/{{ name }}"><h2>{{ name }}</h2></a>
-            total playtime: {{ playtime }} hours
-
+            <p>total playtime: {{ playtime }} hours
+            <hr>
+            <b>Favorite games:</b>
+            <u1 class="list-group">
+                {% for entry in lists %} 
+                {% if entry[5] == 1 %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="/game/{{ entry[0] }}">{{ entry[1] }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </u1>
+        </div>
+        <div class="col">
             {% if reviews %} 
             <h3>Reviews</h3>
             {% endif %} 
-
-            <u1>
+            <div class="my-3 p-3 bg-white rounded shadow-sm">
                 {% for entry in reviews %}
-                <li> <a href="/game/{{ entry[4] }}">{{ entry[3] }}</a> {{ entry[2] }}/10: "{{ entry[1] }}" 
-                {% endfor %}
-            </u1>
-            <p>
-
+                    <div class="media text-muted pt-3">
+                        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                            <div class="d-flex justify-content-between align-items-center w-100">
+                                <strong class="review-main">
+                                    <a href="/game/{{ entry[4] }}">{{ entry[3] }}:</a>
+                                </strong>
+                                <p>{{ entry[2] }}/10</p>
+                            </div>
+                            <span class="d-block">"{{ entry[1] }}"</span>
+                        </div>
+                    </div>
+                {% endfor %}     
+            </div> 
             {% if session.user_id == id %}
             <a href="/remove" class="button">Delete reviews</a>
             {% endif %}
         </div>
-        <div class="col-4">
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col">
             {% if lists %} 
-            <h3>Lists</h3>
+                <h3>Lists</h3>
             {% endif %}
-
-            <u1>
-                <b>Favorite games:</b>
-                {% for entry in lists %}
-                {% if entry[5] == 1 %}
-                <li> <a href="/game/{{ entry[0] }}">{{ entry[1] }}</a>  
-                {% endif %}
-                {% endfor %}
-            </u1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             <p>
             <br>
-            <u1>
-                <b>To Play:</b>
-                {% for entry in lists %}
+            <b>To Play:</b>
+            <u1 class="list-group">
+                {% for entry in lists %} 
                 {% if entry[2] == 0 %}
-                <li> <a href="/game/{{ entry[0] }}">{{ entry[1] }}</a>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="/game/{{ entry[0] }}">{{ entry[1] }}</a>
+                </li>
                 {% endif %}
                 {% endfor %}
             </u1>
-            <p>
+        </div>
+        <div class="col">
             <br>
-            <u1>
-                <b>Played games:</b>
-                {% for entry in lists %}
+            <b>Played Games:</b>
+            <u1 class="list-group">
+                {% for entry in lists %} 
                 {% if entry[2] == 1 %}
-                <li> <a href="/game/{{ entry[0] }}">{{ entry[1] }}</a>
-                <li>Playtime: {{ entry[3] }} hours
-                <li>Platform: {{ entry[4] }}
+                <li class="list-group-item d-flex justify-content-between">
+                    <a href="/game/{{ entry[0] }}">{{ entry[1] }}</a>
+                    <p>Playtime: {{ entry[3] }} hours
+                    <p>Platform: {{ entry[4] }}
+                </li>
                 <p>    
                 {% endif %}
                 {% endfor %}

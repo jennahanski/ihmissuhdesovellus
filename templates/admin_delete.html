@@ -9,7 +9,7 @@
                 <label for="submit">
                 Delete the game from the library:
                 </label>
-                <button type="submit">Delete</button>
+                <button class="btn btn-send" type="submit">Delete</button>
                 <input type="hidden" name="visible" value="f">
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             </form>
@@ -25,7 +25,7 @@
                 <input type="hidden" name="user_id" value="{{ review[4] }}">
                 {% endfor %} 
                 <p>
-                <input type="submit" value="Remove">
+                <input class="btn btn-send" type="submit" value="Remove">
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             </form>
         </div>
