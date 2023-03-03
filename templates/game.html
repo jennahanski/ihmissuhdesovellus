@@ -7,12 +7,47 @@
 {% endblock %}
 
 {% block content %}
-
 <div class="container">
-    <div class="row-1">
+    <div class="row">
         <div class="col">
-            <h1 class="text-center">{{ name }}</h1>
-            <p>Release year: {{ year }}</p>
+            <h1 class="text-left">{{ name }} ({{ year }})</h1>
+            {% if session.user_id %}
+            <ul class="nav">
+                <li class="nav">
+                    {% if not favorite %}
+                    <form action="/game/{{ id }}" method="POST">
+                        <input class="btn btn-fav" type="submit" value="Add to favorites">
+                        <input type="hidden" name="fav" value="1">
+                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                    </form>
+                    {% else %}
+                    <form action="/game/{{ id }}" method="POST">
+                        <input class="nav" type="submit" value="Remove from favorites">
+                        <input type="hidden" name="fav" value="0">
+                        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                    </form>
+                    {% endif %}
+                <li class="nav">
+                    <form action="/{{ id }}/add_tag">
+                        <input class="nav" type="submit" value="Add tags">
+                    </form>
+                <li class="nav dropdown">
+                    <a href="javascript:void(0)" class="dropbtn">Add to list</a>
+                    <div class="dropdown-content">
+                        <form action="/game/{{ id }}" method="POST">
+                            <input class="nav" type="submit" value="To Play">
+                            <input type="hidden" name="list" value="0">
+                            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                        </form>
+                        <form action="/game/{{ id }}" method="POST">
+                            <input class="nav" type="submit" value="Played Game">
+                            <input type="hidden" name="list" value="1">
+                            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+                        </form>
+                    </div>
+                </li>
+            </ul>
+            {% endif %}
             <hr>
         </div>
     </div>
@@ -40,27 +75,15 @@
         <div class="col-4 col-avg">
             <h4>Score: {{ avg }} / 10</h4>
             {% endif %}
-            {% if session.user_id %}
-            {% if not favorite %}
-            <form action="/game/{{ id }}" method="POST">
-                <label for="submit">
-                Add to favorites:
-                </label>
-                <button class="btn btn-fav" type="submit">Add</button>
-                <input type="hidden" name="fav" value="1">
-                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-            </form>
-            {% else %}
-            <form action="/game/{{ id }}" method="POST">
-                <label for="submit">
-                Remove from favorites:
-                </label>
-                <button class="btn btn-fav" type="submit">Remove</button>
-                <input type="hidden" name="fav" value="0">
-                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-            </form>
+            <br>
+            {% if tags %}
+            <b>Tags:</b>
             {% endif %}
-            {% endif %}
+            <p>
+            {% for tag in tags %} 
+                {{ tag[0] }}  
+                <span class="badge badge-tag badge-pill">{{ tag[1] }}</span>
+            {% endfor %}
         </div>
     </div>
     <p>
@@ -90,32 +113,9 @@
                 <input type="hidden" name="game_id" value="{{ id }}">
                 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             </form>
-        </div>
-        <div class="col">
-            Add the game to your list:
-            <form action="/game/{{ id }}" method="POST">
-                <select name="list">
-                    <option value="0">To Play
-                    <option value="1">Played games
-                </select>
-                <input class="btn btn-send" type="submit" value="Send">
-                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-            </form>
-            {% endif %} 
-        </div>
-        <div class="col">
-            <br>
-            {% if tags %}
-            <b>Tags:</b>
+            
+        
             {% endif %}
-            <p>
-            {% for tag in tags %} 
-                {{ tag[0] }}  
-                <span class="badge badge-tag badge-pill">{{ tag[1] }}</span>
-            {% endfor %}
-            <form action="/{{ id }}/add_tag">
-                <input class="btn btn-send" type="submit" value="Add tags">
-            </form>
         </div>
     </div>
 </div>

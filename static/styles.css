@@ -1,15 +1,64 @@
+
+li.dropdown input[type=submit],
+.dropbtn {
+  display: inline-block;
+  color: rgb(90, 69, 69);
+  text-align: center;
+  width: 100%;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li.dropdown input:hover, .li.dropdown:hover .dropbtn {
+  background-color: transparent;
+  color:#745852;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #fcefea;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content input[type=submit] {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content input[type=submit]:hover {background-color: #fcfbfb;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+
+
 .container {
     width: 70%;
     margin: auto;
     overflow: hidden;
     text-align: center;
-    padding-top: 3.5rem;
+    padding-top: 3rem;
     padding-bottom: 3.5rem;
 }
 
 .container-custom {
     padding-top: 3.5rem;
     background-color: #fffefe;
+}
+
+.container-nav {
+    width: 100%;
 }
 
 .library {
@@ -42,6 +91,43 @@ textarea {
     padding-top:20px;
 }
 
+ul.nav {
+    list-style-type: none;
+    margin: 0;
+    width: 100%;
+    background-color: transparent;
+    overflow: visible;
+}
+
+li.nav {
+    float: left;
+}
+
+li.nav a {
+    display: inline-block;
+    color: rgb(90, 59, 59);
+    text-align: left;
+    padding-left: 10px;
+    padding-top: 7.5px;
+    padding-right: 10px;
+    text-decoration: none;
+}
+
+.nav input[type=submit] {
+    background-color: transparent;
+    border: none;
+    color: rgb(90, 59, 59);
+    padding-left: 10px;
+    padding-top: 7.5px;
+    padding-right: 10px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+.nav input[type=submit]:hover {
+    color:#c35057;
+} 
+
 .d-block {
     font-size: 15px;
 }
@@ -54,7 +140,6 @@ textarea {
     background-color: #fa5f30b7;
     padding-top: 2rem;
     padding-bottom: 4rem;
-    
 }
 
 .navbar-custom {
@@ -63,7 +148,7 @@ textarea {
 
 .navbar-custom .navbar-brand {
     font-family: "Formular";
-    color:#f7cf1e;
+    color:  #ff9800;
     font-weight: bold;
     text-align: center;
 }
@@ -102,7 +187,7 @@ textarea {
 .btn-fav,
 .btn-fav:link,
 .btn-send:hover {
-    background-color: #f7c336;
+    background-color: #ebcc79;
     color: rgb(58, 41, 41);
     text-align: center;
     text-decoration: none;

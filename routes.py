@@ -47,6 +47,8 @@ def show_game(game_id):
         game_reviews = reviews.get_reviews(game_id)
         if game_reviews:
             average = reviews.get_average(game_id)
+        else:
+            average=0
         game_tags = tags.get_all_tags(game_id)
         check = reviews.check_for_review(user_id, game_id)
         if check:
