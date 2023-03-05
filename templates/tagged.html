@@ -1,0 +1,17 @@
+{% extends "layout.html" %} 
+{% block content %} 
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2>Games tagged with "{{ tag }}":</h2>
+            <br>
+            {% for game in games %} 
+            <a href="/game/{{ game.id }}">{{ game.name }}</a>
+            <br>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

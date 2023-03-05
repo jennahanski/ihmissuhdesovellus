@@ -81,7 +81,7 @@
             {% endif %}
             <p>
             {% for tag in tags %} 
-                {{ tag[0] }}  
+                <a href="/tagged/{{ tag[0] }}">{{ tag[0] }} </a> 
                 <span class="badge badge-tag badge-pill">{{ tag[1] }}</span>
             {% endfor %}
         </div>

@@ -11,6 +11,10 @@ def get_my_tags(game_id, user_id):
     sql = "SELECT id, name, creator_id FROM tags WHERE game_id=:game_id AND creator_id=:user_id ORDER BY id"
     return db.session.execute(sql, {"game_id":game_id, "user_id":user_id}).fetchall()
 
+def get_games(tag):
+    sql = "SELECT DISTINCT G.name FROM games G, tags T WHERE G.id=T.game_id AND T.name=:tag"
+    return db.session.execute(sql, {"tag":tag}).fetchall()
+
 def get_all_tags(game_id):
     sql = "SELECT T.name, COUNT(U.id) FROM tags T LEFT JOIN users U ON U.id=T.creator_id WHERE game_id=:game_id GROUP BY T.name"
     return db.session.execute(sql, {"game_id":game_id}).fetchall()

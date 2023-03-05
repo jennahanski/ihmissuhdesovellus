@@ -159,10 +159,6 @@ def add_tags(game_id):
         return render_template("tags.html", id=game_id, tags=my_tags, name=name)
 
     if request.method == "POST":
-        #if "tag_id" in request.form:
-        #    tag_id = request.form["tag_id"]
-        #    games.remove_tag(tag_id, game_id)
-
         users.check_csrf()
         tag = request.form["tag"]
 
@@ -174,6 +170,12 @@ def add_tags(game_id):
         tags.add_tags(user_id, game_id, tag)
 
         return redirect("/"+str(game_id)+"/add_tag")
+
+@app.route("/tagged/<tag>")
+def tagged(tag):
+    tagged_games = tags.get_games(tag)
+    return render_template("tagged.html", games=tagged_games,
+                                          tag=tag)
 
 
 @app.route("/add", methods=["GET", "POST"])
