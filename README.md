@@ -2,7 +2,7 @@ Sovelluksen avulla käyttäjä voi pitää kirjaa pelaamistaan videopeleistä li
 
 Sovelluksen nykyiset toiminnallisuudet:
 - Kaksi käyttäjäroolia: tavallinen ja ylläpitäjä.
-- Etusivulla näkyy 5 korkeimman arvosanan saanutta peliä, sekä 5 uusinta arvostelua.
+- Etusivulla näkyy 10 korkeimman arvosanan saanutta peliä, sekä 5 uusinta arvostelua.
 - Pelisivulla näkyvät sen saamat arvostelut, sekä keskiarvosana.
 
 Kirjautunut käyttäjä voi:
