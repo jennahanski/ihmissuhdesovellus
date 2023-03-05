@@ -2,6 +2,7 @@
 {% block content %}
 
 <div class="container">
+    {% if session.user_id %}
     <div class="row">
         <div class="col">
             <h3>Remove a review</h3>
@@ -19,5 +20,9 @@
             </form>
         </div>
     </div>
+    {% else %} 
+    <p>You must be logged in.</p>
+    <p><a href="/login">Log in</a></p>
+    {% endif %}
 </div>
 {% endblock %}

@@ -1,8 +1,8 @@
 {% extends "layout.html" %} 
 {% block content %}
 
-{% if session.is_admin %}
 <div class="container">
+    {% if session.is_admin %}
     <div class="row">
         <div class="col">
             <form action="/game/{{ id }}/delete" method="POST">
@@ -30,9 +30,9 @@
             </form>
         </div>
     </div>
+    {% else %} 
+    <p>You must have admin rights to access this page.</p>
+    <a href="/">Return</a>
+    {% endif %}
 </div>
-{% else %} 
-<p>You must have admin rights to access this page.</p>
-<a href="/">Return</a>
-{% endif %}
 {% endblock %}
