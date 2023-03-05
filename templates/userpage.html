@@ -23,6 +23,7 @@
             {% endif %} 
             <div class="my-3 p-3 bg-white rounded shadow-sm">
                 {% for entry in reviews %}
+                    {% if loop.index <= 5 %}
                     <div class="media text-muted pt-3">
                         <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                             <div class="d-flex justify-content-between align-items-center w-100">
@@ -34,7 +35,13 @@
                             <span class="d-block">"{{ entry[1] }}"</span>
                         </div>
                     </div>
+                    {% endif %}
                 {% endfor %}     
+                {% if reviews|count > 5 %}
+                <small class="d-block text-right mt-3">
+                    <a href="/user/{{ name }}/reviews">All reviews</a>
+                </small>  
+                {% endif %}
             </div> 
             {% if session.user_id == id %}
             <a href="/remove" class="button">Delete reviews</a>

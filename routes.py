@@ -16,6 +16,14 @@ def index():
 def library():
     return render_template("gamelibrary.html", games=games.get_all_games())
 
+@app.route("/user/<username>/reviews")
+def user_reviews(username):
+    user_id = users.get_user_id(username)
+    my_reviews = reviews.get_my_reviews(user_id)
+
+    return render_template("reviewpage.html", username=username,
+                                              reviews=my_reviews)
+
 @app.route("/user/<username>")
 def userpage(username):
     user_id = users.get_user_id(username)

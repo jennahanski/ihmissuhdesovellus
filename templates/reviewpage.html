@@ -1,0 +1,28 @@
+{% extends "layout.html" %} 
+{% block content %} 
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2>All reviews from user <a href="user/{{ username }}">{{ username }}</h2></a>
+            <br>
+            <div class="my-3 p-3 bg-white rounded shadow-sm">
+                {% for entry in reviews %}
+                    <div class="media text-muted pt-3">
+                        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                            <div class="d-flex justify-content-between align-items-center w-100">
+                                <strong class="review-main">
+                                    <a href="/game/{{ entry[4] }}">{{ entry[3] }}:</a>
+                                </strong>
+                                <p>{{ entry[2] }}/10</p>
+                            </div>
+                            <span class="d-block">"{{ entry[1] }}"</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div> 
+        </div>
+    </div>
+</div>
+
+{% endblock %}
