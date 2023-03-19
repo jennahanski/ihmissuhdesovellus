@@ -1,4 +1,4 @@
-Sovelluksen avulla käyttäjä voi pitää kirjaa pelaamistaan videopeleistä lisäämällä niitä omalle listalleen. 
+Sovelluksen avulla käyttäjä voi pitää kirjaa pelaamistaan videopeleistä lisäämällä niitä omalle listalleen ja antamalla arvioita. 
 
 Sovelluksen nykyiset toiminnallisuudet:
 - Kaksi käyttäjäroolia: tavallinen ja ylläpitäjä.
